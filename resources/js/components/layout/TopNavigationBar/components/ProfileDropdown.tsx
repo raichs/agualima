@@ -1,6 +1,4 @@
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
-import { currency } from '@/context/constants';
-import avatar1 from '@/images/users/avatar-1.jpg';
 import { PageProps } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Dropdown, DropdownHeader, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap';
@@ -20,7 +18,7 @@ const ProfileDropdown = () => {
                     aria-haspopup="false"
                     aria-expanded="false"
                 >
-                    <img src={avatar1} width={32} className="rounded-circle me-lg-2 d-flex" alt="user-image" />
+                    <img src="https://placehold.co/150x150" width={32} className="rounded-circle me-lg-2 d-flex" alt="user-image" />
                     <span className="d-lg-flex flex-column gap-1 d-none">
                         <h5 className="my-0">{auth.user?.name}</h5>
                         <h6 className="my-0 fw-normal">{auth.user?.email}</h6>

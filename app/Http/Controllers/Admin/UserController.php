@@ -118,6 +118,11 @@ class UserController extends BaseController
      */
     public function destroy(User $user)
     {
+        if ($user->hasRole('super_admin')) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'No se puede eliminar un usuario con rol de super administrador.');
+        }
+
         $user->delete();
 
         return redirect()->route('admin.users.index')

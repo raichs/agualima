@@ -21,7 +21,7 @@ const lotSchema = yup.object({
 type LotFormData = yup.InferType<typeof lotSchema>;
 
 const EditLotPage = () => {
-    const { lot } = usePage<{ 
+    const { lot } = usePage<{
         lot: Lot;
     }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);

@@ -5,6 +5,7 @@ import { Link, usePage } from '@inertiajs/react';
 import clsx from 'clsx';
 import { Fragment, useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useLayoutContext } from '@/context/useLayoutContext';
 
 const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName, activeMenuItems, toggleMenu, level }: SubMenus) => {
     const [open, setOpen] = useState<boolean>(activeMenuItems!.includes(item.key));
@@ -103,8 +104,16 @@ const MenuItem = ({ item, className, linkClassName, level }: SubMenus) => {
 };
 
 const MenuItemLink = ({ item, className }: SubMenus) => {
+    const { menu: { size }, toggleBackdrop } = useLayoutContext();
+
+    const handleClick = () => {
+        if (size === 'full') {
+            toggleBackdrop();
+        }
+    };
+
     return (
-        <Link href={item.url ?? ''} target={item.target} className={clsx(className, { disabled: item.isDisabled })}>
+        <Link href={item.url ?? ''} target={item.target} className={clsx(className, { disabled: item.isDisabled })} onClick={handleClick}>
             {item.icon && (
                 <span className="menu-icon">
                     <IconifyIcon icon={item.icon} />

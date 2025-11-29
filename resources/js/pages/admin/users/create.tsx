@@ -26,7 +26,7 @@ type UserFormData = yup.InferType<typeof userSchema>;
 const CreateUserPage = () => {
     const { roles } = usePage<{ roles: Role[] }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     const { handleSubmit, control } = useForm<UserFormData>({
         resolver: yupResolver(userSchema),
         defaultValues: {

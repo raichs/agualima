@@ -14,9 +14,20 @@ import { useState } from 'react';
 const userSchema = yup.object({
     name: yup.string().required('El nombre es requerido'),
     email: yup.string().email('Email inválido').required('El email es requerido'),
-    password: yup.string().min(8, 'La contraseña debe tener al menos 8 caracteres').optional().default(''),
-    password_confirmation: yup.string().optional().default(''),
-    role_id: yup.number().required('El rol es requerido'),
+    password: yup.string().test('password', 'La contraseña debe tener al menos 8 caracteres', function(value) {
+        if (value && value.length > 0) {
+            return value.length >= 8;
+        }
+        return true;
+    }).optional().default(''),
+    password_confirmation: yup.string().test('password_confirmation', 'Las contraseñas no coinciden', function(value) {
+        const { password } = this.parent;
+        if (password && password.length > 0) {
+            return value === password;
+        }
+        return true;
+    }).optional().default(''),
+    role_id: yup.string().required('El rol es requerido'),
 });
 
 type UserFormData = yup.InferType<typeof userSchema>;
@@ -28,7 +39,7 @@ interface EditUserPageProps {
 const EditUserPage = ({ user }: EditUserPageProps) => {
     const { roles } = usePage<{ roles: Role[] }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     const { handleSubmit, control } = useForm<UserFormData>({
         resolver: yupResolver(userSchema),
         defaultValues: {
@@ -36,13 +47,13 @@ const EditUserPage = ({ user }: EditUserPageProps) => {
             email: user.email || '',
             password: '',
             password_confirmation: '',
-            role_id: user.role_id || undefined,
+            role_id: user.role_id ? user.role_id.toString() : '',
         },
     });
 
     const onSubmit = (data: UserFormData) => {
         setIsSubmitting(true);
-        router.put(route('admin.users.update', user.id), data, {
+        router.put(route('admin.users.update', user.id), { ...data, role_id: parseInt(data.role_id) }, {
             onFinish: () => setIsSubmitting(false),
         });
     };
@@ -105,12 +116,10 @@ const EditUserPage = ({ user }: EditUserPageProps) => {
                                                     <FormSelect
                                                         {...field}
                                                         isInvalid={!!fieldState.error}
-                                                        value={field.value || ''}
-                                                        onChange={(e) => field.onChange(parseInt(e.target.value))}
                                                     >
                                                         <option value="">Seleccione un rol</option>
                                                         {roles.map((role) => (
-                                                            <option key={role.id} value={role.id}>
+                                                            <option key={role.id} value={role.id.toString()}>
                                                                 {role.label || role.name}
                                                             </option>
                                                         ))}

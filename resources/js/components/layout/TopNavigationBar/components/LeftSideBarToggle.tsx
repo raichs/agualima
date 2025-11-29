@@ -38,7 +38,7 @@ const LeftSideBarToggle = () => {
         } else if (width <= 1140) {
             if (size !== 'condensed') changeMenuSize('condensed');
         }
-    }, [width, url]);
+    }, [width]);
 
     return (
         <button onClick={handleMenuSize} className="sidenav-toggle-button px-2">
