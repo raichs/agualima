@@ -17,7 +17,7 @@ const PagesDropdown = () => {
                     aria-haspopup="false"
                     aria-expanded="false"
                 >
-                    Pages <IconifyIcon icon="tabler:chevron-down" className="ms-1" />
+                    Accesos Directos <IconifyIcon icon="tabler:chevron-down" className="ms-1" />
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-xxl p-0">
                     <Row className="g-0">

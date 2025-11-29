@@ -1,5 +1,5 @@
 import { useLayoutContext } from '@/context/useLayoutContext';
-import Dashboard from '@/pages/dashboard/sales/index';
+import Dashboard from '@/pages/admin/dashboard/index';
 import { useEffect } from 'react';
 
 const Page = () => {

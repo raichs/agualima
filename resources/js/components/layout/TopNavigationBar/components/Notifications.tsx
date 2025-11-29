@@ -28,7 +28,7 @@ const Notifications = () => {
                     <IconifyIcon icon="tabler:bell" className="animate-ring fs-22" />
                     <span className="noti-icon-badge" />
                 </DropdownToggle>
-                <DropdownMenu className="p-0 dropdown-menu-start dropdown-menu-lg" style={{ minHeight: 300 }}>
+                {/* <DropdownMenu className="p-0 dropdown-menu-start dropdown-menu-lg" style={{ minHeight: 300 }}>
                     <div className="p-3 border-bottom border-dashed">
                         <Row className="align-items-center">
                             <Col>
@@ -113,7 +113,7 @@ const Notifications = () => {
                     >
                         View All
                     </Link>
-                </DropdownMenu>
+                </DropdownMenu> */}
             </Dropdown>
         </div>
     );

@@ -20,7 +20,7 @@ const ThemeCustomizerToggle = () => {
         <>
             <div className="topbar-item d-none d-sm-flex">
                 <button
-                    onClick={toggleThemeCustomizerOffcanvas}
+                    // onClick={toggleThemeCustomizerOffcanvas}
                     className="topbar-link"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#theme-settings-offcanvas"

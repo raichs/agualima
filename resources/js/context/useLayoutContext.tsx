@@ -48,7 +48,7 @@ const LayoutProvider = ({ children }: ChildrenType) => {
         layoutMode: queryParams['layout_mode'] ? (queryParams['layout_mode'] as LayoutModeType) : 'fluid',
     };
 
-    const [settings, setSettings] = useLocalStorage<LayoutState>('__OSEN_CONFIG__', INIT_STATE, override);
+    const [settings, setSettings] = useLocalStorage<LayoutState>('__AGUALIMA_CONFIG__', INIT_STATE, override);
     const [offcanvasStates, setOffcanvasStates] = useState<LayoutOffcanvasStatesType>({
         showThemeCustomizer: false,
         showHorizontalMenu: false,

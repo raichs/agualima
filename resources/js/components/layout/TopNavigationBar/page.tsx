@@ -20,28 +20,13 @@ const TopNavigationBarPage = () => {
                     <LogoBox />
                     <LeftSideBarToggle />
                     <HorizontalToggle />
-                    <div
-                        className="topbar-search text-muted d-none d-xl-flex gap-2 align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-target="#searchModal"
-                    >
-                        <IconifyIcon icon="tabler:search" className="fs-18" />
-                        <span className="me-2">Search something..</span>
-                        <span className="ms-auto fw-medium">⌘K</span>
-                    </div>
-                    <PagesDropdown />
+                    {/* <Apps /> */}
+                    {/* <PagesDropdown /> */}
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                    <div className="topbar-item d-flex d-xl-none">
-                        <button className="topbar-link" data-bs-toggle="modal" data-bs-target="#searchModal" type="button">
-                            <IconifyIcon icon="tabler:search" className="fs-22" />
-                        </button>
-                    </div>
-                    <Country />
                     <Suspense fallback={<FallbackLoading />}>
                         <Notifications />
                     </Suspense>
-                    <Apps />
                     <ThemeCustomizerToggle />
                     <ThemeModeToggle />
                     <ProfileDropdown />

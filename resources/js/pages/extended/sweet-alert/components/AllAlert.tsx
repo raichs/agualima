@@ -445,7 +445,7 @@ const AllAlert = () => {
                                         confirmButton: 'btn btn-primary',
                                     },
                                     buttonsStyling: false,
-                                    background: `var(--osen-secondary-bg) url(${small5}) no-repeat center`,
+                                    background: `var(--agualima-secondary-bg) url(${small5}) no-repeat center`,
                                 })
                             }
                             className="btn btn-secondary"
