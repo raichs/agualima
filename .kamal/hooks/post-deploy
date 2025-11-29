@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Hook que se ejecuta después del deploy
+# Corre migraciones y optimiza la aplicación
+
+echo "Running post-deploy tasks..."
+
+# Run migrations
+kamal app exec "php artisan migrate --force"
+
+# Optimize Laravel
+kamal app exec "php artisan optimize"
+
+echo "Post-deploy tasks completed!"

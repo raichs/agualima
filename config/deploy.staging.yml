@@ -1,0 +1,58 @@
+# Deploy to these servers.
+servers:
+  web:
+    - 194.163.134.202
+
+# Persistent storage volumes
+volumes:
+  - "agualima_storage_staging:/var/www/html/storage"
+
+# Environment variables for STAGING
+env:
+  clear:
+    APP_NAME: "Agualima"
+    VITE_APP_NAME: "Agualima"
+    APP_ENV: staging
+    APP_DEBUG: true
+    APP_URL: "https://agualima.codevspro.com"
+    APP_LOCALE: "es"
+    APP_FALLBACK_LOCALE: "es"
+    APP_FAKER_LOCALE: "es_ES"
+    APP_MAINTENANCE_DRIVER: "file"
+    ASSET_URL: "https://agualima.codevspro.com"
+    LOG_CHANNEL: stderr
+    LOG_LEVEL: debug
+    CACHE_STORE: file
+    QUEUE_CONNECTION: database
+    SESSION_DRIVER: database
+    SESSION_LIFETIME: 120
+  secret:
+    - APP_KEY
+    - DB_CONNECTION
+    - DB_HOST
+    - DB_PORT
+    - DB_DATABASE
+    - DB_USERNAME
+    - DB_PASSWORD
+
+proxy:
+  ssl: true
+  app_port: 8080
+  host: agualima.codevspro.com
+
+# Accessory services
+accessories:
+  db:
+    image: mysql:8.0
+    host: 194.163.134.202
+    port: "3307:3306"
+    env:
+      clear:
+        MYSQL_ROOT_HOST: '%'
+      secret:
+        - MYSQL_ROOT_PASSWORD
+        - MYSQL_DATABASE
+        - MYSQL_USER
+        - MYSQL_PASSWORD
+    directories:
+      - data:/var/lib/mysql

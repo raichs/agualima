@@ -1,0 +1,54 @@
+# Deploy to these servers.
+servers:
+  web:
+    - 194.163.134.202
+
+# Persistent storage volumes
+volumes:
+  - "agualima_storage:/var/www/html/storage"
+
+# Environment variables for PRODUCTION
+env:
+  clear:
+    APP_NAME: "Agualima"
+    APP_ENV: production
+    APP_DEBUG: false
+    APP_URL: "https://agualima.codevspro.com"
+    ASSET_URL: "https://agualima.codevspro.com"
+    DB_CONNECTION: mysql
+    DB_HOST: agualima-db
+    DB_PORT: 3306
+    DB_DATABASE: agualima_production
+    LOG_CHANNEL: stderr
+    LOG_LEVEL: error
+    CACHE_STORE: file
+    QUEUE_CONNECTION: database
+    SESSION_DRIVER: database
+    SESSION_LIFETIME: 120
+  secret:
+    - APP_KEY
+    - DB_USERNAME
+    - DB_PASSWORD
+
+# Traefik proxy
+proxy:
+  ssl: true
+  app_port: 8080
+  host: agualima.codevspro.com
+
+# Accessory services
+accessories:
+  db:
+    image: mysql:8.0
+    host: 194.163.134.202
+    port: 3306
+    env:
+      clear:
+        MYSQL_ROOT_HOST: '%'
+      secret:
+        - MYSQL_ROOT_PASSWORD
+        - MYSQL_DATABASE
+        - MYSQL_USER
+        - MYSQL_PASSWORD
+    directories:
+      - data:/var/lib/mysql

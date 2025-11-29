@@ -24,3 +24,9 @@ yarn-error.log
 /.zed
 
 ./idea
+
+# kamal secrets
+.kamal/secrets.*
+!.kamal/secrets*.example
+.kamal/secrets-production
+.kamal/secrets-staging

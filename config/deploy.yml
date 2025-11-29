@@ -1,0 +1,32 @@
+# Name of your application. Used to uniquely configure containers.
+service: agualima
+
+# Name of the container image.
+image: rchancafe/agualima
+
+# Credentials for Docker Hub
+registry:
+  username: rchancafe
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Configure builder setup
+builder:
+  arch: amd64
+
+# Traefik proxy with SSL
+proxy:
+  ssl: true
+  app_port: 8080
+
+# Handy aliases
+aliases:
+  console: app exec --reuse -i "bash"
+  tinker: app exec --reuse -i "php artisan tinker"
+
+# Persistent storage volumes
+volumes:
+  - "agualima_storage:/var/www/html/storage"
+
+ssh:
+  user: ubuntu
