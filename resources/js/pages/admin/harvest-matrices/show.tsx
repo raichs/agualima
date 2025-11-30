@@ -136,14 +136,6 @@ const ShowHarvestMatrixPage = ({ matrix }: ShowHarvestMatrixPageProps) => {
                             <p className="form-control-plaintext">{matrix.creator?.name || 'N/A'}</p>
                         </div>
                     </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Fecha de Creación</label>
-                            <p className="form-control-plaintext">
-                                {new Date(matrix.created_at).toLocaleString('es-ES')}
-                            </p>
-                        </div>
-                    </Col>
                 </Row>
             </ComponentContainerCard>
         </>

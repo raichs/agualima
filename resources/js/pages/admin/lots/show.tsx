@@ -42,22 +42,6 @@ const ShowLotPage = () => {
                             <p className="form-control-plaintext">{lot.description || '-'}</p>
                         </div>
                     </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Fecha de Creación</label>
-                            <p className="form-control-plaintext">
-                                {lot.created_at ? new Date(lot.created_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Última Actualización</label>
-                            <p className="form-control-plaintext">
-                                {lot.updated_at ? new Date(lot.updated_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
                 </Row>
             </ComponentContainerCard>
         </>

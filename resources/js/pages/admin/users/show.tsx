@@ -23,51 +23,23 @@ const ShowUserPage = ({ user }: ShowUserPageProps) => {
             </Row>
             <ComponentContainerCard title="Información del usuario">
                 <Row>
-                    <Col lg={6}>
+                    <Col lg={4}>
                         <div className="mb-3">
                             <label className="form-label fw-bold">Nombre Completo</label>
                             <p className="form-control-plaintext">{user.name}</p>
                         </div>
                     </Col>
-                    <Col lg={6}>
+                    <Col lg={4}>
                         <div className="mb-3">
                             <label className="form-label fw-bold">Email</label>
                             <p className="form-control-plaintext">{user.email}</p>
                         </div>
                     </Col>
-                    <Col lg={6}>
+                    <Col lg={4}>
                         <div className="mb-3">
                             <label className="form-label fw-bold">Rol</label>
                             <p className="form-control-plaintext">
                                 <Badge bg="primary">{user.role_name || 'Sin rol'}</Badge>
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Email Verificado</label>
-                            <p className="form-control-plaintext">
-                                {user.email_verified_at ? (
-                                    <Badge bg="success">Verificado</Badge>
-                                ) : (
-                                    <Badge bg="warning">No verificado</Badge>
-                                )}
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Fecha de Creación</label>
-                            <p className="form-control-plaintext">
-                                {user.created_at ? new Date(user.created_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Última Actualización</label>
-                            <p className="form-control-plaintext">
-                                {user.updated_at ? new Date(user.updated_at).toLocaleString('es-ES') : '-'}
                             </p>
                         </div>
                     </Col>

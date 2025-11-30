@@ -17,7 +17,7 @@ class UserResource extends JsonResource
     {
         $role = $this->roles->first();
         $roleValue = $role?->name;
-        
+
         // Traducir el rol si es un enum válido
         $roleLabel = $roleValue;
         if ($roleValue) {
@@ -28,7 +28,7 @@ class UserResource extends JsonResource
                 $roleLabel = $roleValue;
             }
         }
-        
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -37,8 +37,6 @@ class UserResource extends JsonResource
             'role_id' => $role?->id,
             'role_value' => $roleValue,
             'role_name' => $roleLabel,
-            'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

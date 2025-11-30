@@ -56,22 +56,6 @@ const ShowDistributionPage = () => {
                             </p>
                         </div>
                     </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Fecha de Creación</label>
-                            <p className="form-control-plaintext">
-                                {distribution.created_at ? new Date(distribution.created_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Última Actualización</label>
-                            <p className="form-control-plaintext">
-                                {distribution.updated_at ? new Date(distribution.updated_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
                 </Row>
             </ComponentContainerCard>
         </>

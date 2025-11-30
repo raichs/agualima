@@ -30,22 +30,6 @@ const ShowShiftPage = () => {
                             <p className="form-control-plaintext">{shift.name}</p>
                         </div>
                     </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Fecha de Creación</label>
-                            <p className="form-control-plaintext">
-                                {shift.created_at ? new Date(shift.created_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
-                    <Col lg={6}>
-                        <div className="mb-3">
-                            <label className="form-label fw-bold">Última Actualización</label>
-                            <p className="form-control-plaintext">
-                                {shift.updated_at ? new Date(shift.updated_at).toLocaleString('es-ES') : '-'}
-                            </p>
-                        </div>
-                    </Col>
                 </Row>
             </ComponentContainerCard>
         </>

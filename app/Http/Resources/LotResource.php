@@ -19,8 +19,6 @@ class LotResource extends JsonResource
             'code' => $this->code,
             'name' => $this->name,
             'description' => $this->description,
-            'created_at' => $this->created_at?->toDateTimeString(),
-            'updated_at' => $this->updated_at?->toDateTimeString(),
         ];
     }
 }

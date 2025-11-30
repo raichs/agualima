@@ -18,9 +18,8 @@ class LotCollection extends ResourceCollection
             return [
                 'id' => $lot->id,
                 'code' => $lot->code,
-                'project_name' => $lot->project->name ?? null,
-                'variety_name' => $lot->variety->name ?? null,
-                'shift_name' => $lot->shift->name ?? null,
+                'name' => $lot->name ?? null,
+                'description' => $lot->description ?? null,
             ];
         })->toArray();
     }
