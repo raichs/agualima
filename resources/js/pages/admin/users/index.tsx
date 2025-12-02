@@ -32,6 +32,7 @@ const UsersPage = () => {
                         <Table
                             columns={[
                                 { label: 'Nombre', name: 'name' },
+                                { label: 'DNI', name: 'dni' },
                                 { label: 'Email', name: 'email' },
                                 { label: 'Rol', name: 'role_name' },
                             ]}
@@ -39,6 +40,19 @@ const UsersPage = () => {
                             showRoute="admin.users.show"
                             editRoute="admin.users.edit"
                             deleteRoute="admin.users.destroy"
+                            customActions={(user) => (
+                                <button
+                                    className="btn btn-sm btn-warning me-2"
+                                    onClick={() => {
+                                        if (confirm('¿Está seguro de restablecer la contraseña de este usuario? Se generará una nueva contraseña temporal.')) {
+                                            router.post(route('admin.users.reset-password', user.id));
+                                        }
+                                    }}
+                                    title="Restablecer contraseña"
+                                >
+                                    🔑 Reset
+                                </button>
+                            )}
                             deleteOptions={{
                                 title: '¿Eliminar usuario?',
                                 text: 'Esta acción no se puede deshacer',

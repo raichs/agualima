@@ -29,4 +29,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'verified'])->group(fu
         'distributions' => DistributionController::class,
         'harvest-matrices' => HarvestMatrixController::class,
     ]);
+
+    // Additional user routes
+    Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
 });

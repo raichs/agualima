@@ -9,7 +9,7 @@ import { Button, Card, Col, FormCheck, FormControl, FormGroup, FormLabel, Row } 
 import { currentYear, developedBy, developedByWebSite } from '@/context/constants';
 
 type LoginForm = {
-    email: string;
+    dni: string;
     password: string;
     remember: boolean;
 };
@@ -21,8 +21,8 @@ interface LoginProps {
 
 const LoginPage = ({ canResetPassword }: LoginProps) => {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
-        email: 'admin@agualima.com',
-        password: 'admin123',
+        dni: '',
+        password: '',
         remember: true,
     });
 
@@ -45,18 +45,18 @@ const LoginPage = ({ canResetPassword }: LoginProps) => {
                                 <img src={logo} alt="logo light" width={160} className="logo-light" />
                             </Link>
                             <h3 className="fw-semibold mb-2">Ingresa a tu cuenta</h3>
-                            <p className="text-muted mb-4">Ingresa tu correo electrónico y contraseña para acceder al panel de administración.</p>
+                            <p className="text-muted mb-4">Ingresa tu DNI y contraseña para acceder al panel de administración.</p>
 
                             <form onSubmit={submit} className="text-start mb-3">
                                 <FormGroup className="mb-3">
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>DNI</FormLabel>
                                     <FormControl
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
+                                        type="text"
+                                        placeholder="Ingrese su DNI"
+                                        value={data.dni}
+                                        onChange={(e) => setData('dni', e.target.value)}
                                     />
-                                    {errors.email && <p className="text-danger">{errors.email}</p>}
+                                    {errors.dni && <p className="text-danger">{errors.dni}</p>}
                                 </FormGroup>
 
                                 <FormGroup className="mb-3">

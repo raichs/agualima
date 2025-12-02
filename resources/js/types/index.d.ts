@@ -34,6 +34,9 @@ export interface SharedData {
 export interface User {
     id: number;
     name: string;
+    first_name?: string;
+    last_name?: string;
+    dni?: string;
     email: string;
     avatar?: string;
     email_verified_at: string | null;
@@ -101,25 +104,69 @@ export interface Distribution {
 
 export interface HarvestMatrix {
   id: number;
-  name: string;
   week_number: number;
   year: number;
-  start_date: string;
-  end_date: string;
-  status: 'draft' | 'active' | 'completed' | 'cancelled';
-  status_label: string;
-  status_color: string;
-  kg_target: number | null;
-  kg_executed: number;
-  completion_percentage: number;
-  total_staff: number | null;
-  notes?: string;
-  has_active_alerts: boolean;
-  creator?: {
+  user?: {
     id: number;
     name: string;
   };
-  programming_count?: number;
+  dates?: Array<{
+    day_of_week: number;
+    date: string;
+    day_name: string;
+  }>;
+  rows?: Array<{
+    id?: number;
+    variety_id?: string;
+    shift_id?: string;
+    variety?: {
+      id: number;
+      name: string;
+    };
+    shift?: {
+      id: number;
+      name: string;
+    };
+    lots?: Array<{
+      lot_id?: string;
+      lot?: {
+        id: number;
+        code: string;
+        name: string;
+      };
+      lines: number;
+      total_kilos?: number;
+      kg_per_shift_avg?: number;
+      total_shifts?: number;
+      daily_data?: Array<{
+        day_of_week: number;
+        date: string;
+        frequency: number;
+        kg_per_day: number;
+        shifts: number;
+      }>;
+    }>;
+    total_kilos: number;
+    kg_per_shift_avg: number;
+    total_shifts: number;
+    daily_data?: Array<{
+      day_of_week: number;
+      date: string;
+      frequency: number;
+      kg_per_day: number;
+      shifts: number;
+    }>;
+    total_kilos: number;
+    kg_per_shift_avg: number;
+    total_shifts: number;
+    daily_data?: Array<{
+      day_of_week: number;
+      date: string;
+      frequency: number;
+      kg_per_day: number;
+      shifts: number;
+    }>;
+  }>;
   created_at: string;
   updated_at: string;
 }

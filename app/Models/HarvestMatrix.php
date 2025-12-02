@@ -14,50 +14,30 @@ class HarvestMatrix extends Model implements Auditable
     use SoftDeletes, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        'name',
         'week_number',
         'year',
-        'start_date',
-        'end_date',
-        'status',
-        'kg_target',
-        'kg_executed',
-        'total_staff',
-        'notes',
-        'created_by',
-        'updated_by',
+        'user_id',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
-        'kg_target' => 'decimal:2',
-        'kg_executed' => 'decimal:2',
-        'status' => MatrixStatusEnum::class,
+        'week_number' => 'integer',
+        'year' => 'integer',
     ];
 
     /**
-     * Relación con programaciones diarias
+     * Relación con el usuario responsable
      */
-    public function programming(): HasMany
+    public function user(): BelongsTo
     {
-        return $this->hasMany(HarvestProgramming::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Usuario que creó la matriz
+     * Relación con filas de la matriz
      */
-    public function creator(): BelongsTo
+    public function rows(): HasMany
     {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    /**
-     * Usuario que actualizó la matriz
-     */
-    public function updater(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->hasMany(HarvestMatrixRow::class);
     }
 
     /**
@@ -67,14 +47,12 @@ class HarvestMatrix extends Model implements Auditable
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('week_number', 'like', '%'.$search.'%')
-                    ->orWhere('year', 'like', '%'.$search.'%');
+                $query->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', '%'.$search.'%');
+                })
+                ->orWhere('week_number', 'like', '%'.$search.'%')
+                ->orWhere('year', 'like', '%'.$search.'%');
             });
-        });
-
-        $query->when($filters['status'] ?? null, function ($query, $status) {
-            $query->where('status', $status);
         });
 
         $query->when($filters['year'] ?? null, function ($query, $year) {
@@ -87,10 +65,8 @@ class HarvestMatrix extends Model implements Auditable
      */
     public function getCompletionPercentageAttribute(): float
     {
-        if (!$this->kg_target || $this->kg_target == 0) {
-            return 0;
-        }
-        return round(($this->kg_executed / $this->kg_target) * 100, 2);
+        // TODO: Implementar cuando se agreguen campos de ejecución
+        return 0;
     }
 
     /**
@@ -98,6 +74,7 @@ class HarvestMatrix extends Model implements Auditable
      */
     public function hasActiveAlerts(): bool
     {
-        return $this->programming()->where('has_alert', true)->exists();
+        // TODO: Implementar cuando se agregue relación con programming
+        return false;
     }
 }

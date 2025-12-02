@@ -8,31 +8,24 @@ import { Link, usePage } from '@inertiajs/react';
 import { Badge, Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
 
 const HarvestMatricesPage = () => {
-    const { matrices, statuses } = usePage<{
+    const { matrices } = usePage<{
         matrices: PaginatedData<HarvestMatrix>;
-        statuses: Array<{ value: string; label: string }>;
     }>().props;
 
     const { data, meta } = matrices;
     const links = meta?.links || [];
 
-    // Agregar badges de estado en la tabla
-    const dataWithBadges = data.map(matrix => ({
+    // Agregar campos calculados para la tabla
+    const dataWithCalculatedFields = data.map(matrix => ({
         ...matrix,
+        name: matrix.user?.name || 'Sin asignar',
+        week_display: `Semana ${matrix.week_number} - ${matrix.year}`,
         status_badge: (
-            <Badge bg={matrix.status_color}>
-                {matrix.status_label}
+            <Badge bg="secondary">
+                Activa
             </Badge>
         ),
-        week_display: `Semana ${matrix.week_number} - ${matrix.year}`,
-        kg_progress: matrix.kg_target 
-            ? `${matrix.kg_executed.toLocaleString()} / ${matrix.kg_target.toLocaleString()} kg (${matrix.completion_percentage}%)`
-            : `${matrix.kg_executed.toLocaleString()} kg`,
-        alerts: matrix.has_active_alerts ? (
-            <Badge bg="danger"><IconifyIcon icon="tabler:alert-triangle" /> Alertas</Badge>
-        ) : (
-            <Badge bg="success"><IconifyIcon icon="tabler:check" /> Sin alertas</Badge>
-        ),
+        created_at_display: new Date(matrix.created_at).toLocaleDateString('es-ES'),
     }));
 
     return (
@@ -51,14 +44,12 @@ const HarvestMatricesPage = () => {
                         </CardHeader>
                         <Table
                             columns={[
-                                { label: 'Nombre', name: 'name' },
+                                { label: 'Responsable', name: 'name' },
                                 { label: 'Semana', name: 'week_display' },
                                 { label: 'Estado', name: 'status_badge' },
-                                { label: 'Progreso Kg', name: 'kg_progress' },
-                                { label: 'Personal', name: 'total_staff' },
-                                { label: 'Alertas', name: 'alerts' },
+                                { label: 'Creada', name: 'created_at_display' },
                             ]}
-                            rows={dataWithBadges}
+                            rows={dataWithCalculatedFields}
                             showRoute="admin.harvest-matrices.show"
                             editRoute="admin.harvest-matrices.edit"
                             deleteRoute="admin.harvest-matrices.destroy"

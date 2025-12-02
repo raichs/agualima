@@ -18,8 +18,10 @@ class UserSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => 'admin@agualima.com'],
             [
-                'name' => 'Super Administrador',
-                'password' => Hash::make('admin123'),
+                'first_name' => 'Admin',
+                'last_name' => 'Sistema',
+                'dni' => '12345678',
+                'password' => Hash::make('12345678'),
             ]
         );
         $superAdmin->assignRole(RoleEnum::SUPER_ADMIN->value);
@@ -27,43 +29,59 @@ class UserSeeder extends Seeder
         // Create other users
         $users = [
             [
-                'name' => 'Xiomara Torres',
+                'first_name' => 'Xiomara',
+                'last_name' => 'Torres',
                 'email' => 'xiomara.torres@agualima.com',
+                'dni' => '87654321',
                 'role' => RoleEnum::MANAGEMENT->value,
             ],
             [
-                'name' => 'Fernando Cabrera',
+                'first_name' => 'Fernando',
+                'last_name' => 'Cabrera',
                 'email' => 'fernando.cabrera@agualima.com',
+                'dni' => '76543210',
                 'role' => RoleEnum::ADMINISTRATOR->value,
             ],
             [
-                'name' => 'Clever Oruna',
+                'first_name' => 'Clever',
+                'last_name' => 'Oruna',
                 'email' => 'clever.oruna@agualima.com',
+                'dni' => '65432109',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'name' => 'Pedro Gómez',
+                'first_name' => 'Pedro',
+                'last_name' => 'Gómez',
                 'email' => 'pedro.gomez@agualima.com',
+                'dni' => '54321098',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'name' => 'Liliana Guzmán',
+                'first_name' => 'Liliana',
+                'last_name' => 'Guzmán',
                 'email' => 'liliana.guzman@agualima.com',
+                'dni' => '43210987',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'name' => 'Susan Yovera',
+                'first_name' => 'Susan',
+                'last_name' => 'Yovera',
                 'email' => 'susan.yovera@agualima.com',
+                'dni' => '32109876',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'name' => 'Diana Gonzáles',
+                'first_name' => 'Diana',
+                'last_name' => 'Gonzáles',
                 'email' => 'diana.gonzales@agualima.com',
+                'dni' => '21098765',
                 'role' => RoleEnum::VIEWER->value,
             ],
             [
-                'name' => 'Valeria Agüero',
+                'first_name' => 'Valeria',
+                'last_name' => 'Agüero',
                 'email' => 'valeria.aguero@agualima.com',
+                'dni' => '10987654',
                 'role' => RoleEnum::VIEWER->value,
             ],
         ];
@@ -72,8 +90,11 @@ class UserSeeder extends Seeder
             $user = User::firstOrCreate(
                 ['email' => $userData['email']],
                 [
-                    'name' => $userData['name'],
-                    'password' => Hash::make('password'),
+                    'name' => $userData['first_name'] . ' ' . $userData['last_name'],
+                    'first_name' => $userData['first_name'],
+                    'last_name' => $userData['last_name'],
+                    'dni' => $userData['dni'],
+                    'password' => Hash::make($userData['dni']),
                 ]
             );
 

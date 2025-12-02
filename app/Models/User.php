@@ -21,6 +21,9 @@ class User extends Authenticatable implements Auditable
      */
     protected $fillable = [
         'name',
+        'first_name',
+        'last_name',
+        'dni',
         'email',
         'password',
     ];
@@ -49,6 +52,14 @@ class User extends Authenticatable implements Auditable
     }
 
     /**
+     * Get the login username to be used by the model.
+     */
+    public function getAuthIdentifierName(): string
+    {
+        return 'dni';
+    }
+
+    /**
      * Scope a query to filter users by search criteria.
      */
     public function scopeFilter($query, array $filters)
@@ -56,6 +67,9 @@ class User extends Authenticatable implements Auditable
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('first_name', 'like', '%'.$search.'%')
+                    ->orWhere('last_name', 'like', '%'.$search.'%')
+                    ->orWhere('dni', 'like', '%'.$search.'%')
                     ->orWhere('email', 'like', '%'.$search.'%');
             });
         });
@@ -76,6 +90,32 @@ class User extends Authenticatable implements Auditable
             return $roleEnum->label();
         } catch (\ValueError $e) {
             return $role->name;
+        }
+    }
+
+    /**
+     * Get the full name attribute
+     */
+    public function getNameAttribute(): string
+    {
+        if ($this->first_name && $this->last_name) {
+            return $this->first_name . ' ' . $this->last_name;
+        }
+        return $this->attributes['name'] ?? '';
+    }
+
+    /**
+     * Set the name attribute to update first_name and last_name
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+
+        // Split name into first_name and last_name if not already set
+        if (!$this->first_name && !$this->last_name && $value) {
+            $parts = explode(' ', $value, 2);
+            $this->attributes['first_name'] = $parts[0] ?? '';
+            $this->attributes['last_name'] = $parts[1] ?? '';
         }
     }
 

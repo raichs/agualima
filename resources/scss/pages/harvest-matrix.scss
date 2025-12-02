@@ -1,0 +1,179 @@
+// Harvest Matrix Styles
+
+.harvest-matrix {
+    &__table-container {
+        max-height: 70vh;
+        overflow: auto;
+    }
+
+    &__table {
+        min-width: 1200px;
+        margin-bottom: 0;
+    }
+
+    // Sticky columns
+    &__sticky-col {
+        position: sticky;
+        background-color: white;
+        z-index: 1;
+        border-right: 2px solid #dee2e6;
+        padding: 8px;
+
+        &--variety {
+            left: 0;
+            z-index: 2;
+            min-width: 160px;
+            vertical-align: middle;
+        }
+
+        &--shift {
+            left: 160px;
+            z-index: 2;
+            min-width: 140px;
+            vertical-align: middle;
+        }
+
+        &--lots {
+            left: 300px;
+            z-index: 2;
+            min-width: 160px;
+            vertical-align: middle;
+        }
+
+        &--lines {
+            left: 460px;
+            z-index: 2;
+            min-width: 100px;
+            vertical-align: middle;
+        }
+
+        &--kilos {
+            left: 560px;
+            z-index: 2;
+            min-width: 80px;
+            vertical-align: middle;
+        }
+
+        &--kg-avg {
+            left: 640px;
+            z-index: 2;
+            min-width: 100px;
+            vertical-align: middle;
+        }
+
+        &--shifts {
+            left: 740px;
+            z-index: 2;
+            min-width: 80px;
+            vertical-align: middle;
+        }
+
+        &--kg-turno {
+            left: 820px;
+            z-index: 2;
+            min-width: 100px;
+            vertical-align: middle;
+        }
+    }
+
+    // Table headers
+    &__header {
+        &--day {
+            min-width: 180px;
+            text-align: center;
+            padding: 4px;
+        }
+
+        &--date {
+            text-align: center;
+            padding: 4px;
+            font-size: 0.85rem;
+        }
+
+        &--label {
+            padding: 4px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+    }
+
+    // Total rows
+    &__total-row {
+        font-weight: bold;
+        border-top: 2px solid #0f5132;
+
+        &--total {
+            background-color: #d1e7dd;
+
+            .harvest-matrix__sticky-col {
+                background-color: #d1e7dd;
+                border-right: 2px solid #0f5132;
+            }
+
+            td {
+                border-right: 1px solid #0f5132;
+            }
+        }
+
+        &--kg-jornal {
+            background-color: #cfe2ff;
+            border-top: 2px solid #084298;
+
+            .harvest-matrix__sticky-col {
+                background-color: #cfe2ff;
+                border-right: 2px solid #084298;
+            }
+
+            td {
+                border-right: 1px solid #084298;
+            }
+        }
+    }
+
+    // Input fields
+    &__input {
+        &--readonly {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        &--sm {
+            width: 60px;
+        }
+
+        &--md {
+            width: 70px;
+        }
+    }
+
+    // Select styles
+    &__select {
+        &--error {
+            .select__control {
+                border-color: #dc3545 !important;
+
+                &:hover {
+                    border-color: #dc3545 !important;
+                }
+            }
+        }
+
+        &-error-text {
+            font-size: 0.7rem;
+            display: block;
+        }
+    }
+
+    // Lot container
+    &__lot-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+    }
+}
+
+// React Select custom styles
+.select2 {
+    font-size: 0.875rem;
+}

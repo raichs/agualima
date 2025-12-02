@@ -47,14 +47,19 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'dni' => 'required|string|max:20|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'name' => $validated['first_name'] . ' ' . $validated['last_name'],
+            'dni' => $validated['dni'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -93,16 +98,21 @@ class UserController extends BaseController
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'dni' => 'required|string|max:20|unique:users,dni,' . $user->id,
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
         ]);
 
         $user->update([
-            'name' => $validated['name'],
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'name' => $validated['first_name'] . ' ' . $validated['last_name'],
+            'dni' => $validated['dni'],
             'email' => $validated['email'],
-            'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
+            'password' => isset($validated['password']) && $validated['password'] ? Hash::make($validated['password']) : $user->password,
         ]);
 
         // Actualizar rol
@@ -114,18 +124,18 @@ class UserController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Reset user password.
      */
-    public function destroy(User $user)
+    public function resetPassword(User $user)
     {
-        if ($user->hasRole('super_admin')) {
-            return redirect()->route('admin.users.index')
-                ->with('error', 'No se puede eliminar un usuario con rol de super administrador.');
-        }
+        // Generate a random password
+        $newPassword = 'Temp' . rand(1000, 9999) . '!';
 
-        $user->delete();
+        $user->update([
+            'password' => Hash::make($newPassword),
+        ]);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Usuario eliminado exitosamente.');
+            ->with('success', 'Contraseña restablecida exitosamente. Nueva contraseña: ' . $newPassword);
     }
 }

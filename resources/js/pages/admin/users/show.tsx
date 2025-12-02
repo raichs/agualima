@@ -25,8 +25,20 @@ const ShowUserPage = ({ user }: ShowUserPageProps) => {
                 <Row>
                     <Col lg={4}>
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Nombre Completo</label>
-                            <p className="form-control-plaintext">{user.name}</p>
+                            <label className="form-label fw-bold">Nombres</label>
+                            <p className="form-control-plaintext">{user.first_name}</p>
+                        </div>
+                    </Col>
+                    <Col lg={4}>
+                        <div className="mb-3">
+                            <label className="form-label fw-bold">Apellidos</label>
+                            <p className="form-control-plaintext">{user.last_name}</p>
+                        </div>
+                    </Col>
+                    <Col lg={4}>
+                        <div className="mb-3">
+                            <label className="form-label fw-bold">DNI</label>
+                            <p className="form-control-plaintext">{user.dni}</p>
                         </div>
                     </Col>
                     <Col lg={4}>
