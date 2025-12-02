@@ -21,8 +21,8 @@ interface LoginProps {
 
 const LoginPage = ({ canResetPassword }: LoginProps) => {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
-        dni: '',
-        password: '',
+        dni: '12345678',
+        password: '12345678',
         remember: true,
     });
 
