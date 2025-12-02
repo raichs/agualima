@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => 'admin@agualima.com'],
             [
+                'name' => 'Admin Sistema',
                 'first_name' => 'Admin',
                 'last_name' => 'Sistema',
                 'dni' => '12345678',

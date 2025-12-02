@@ -150,7 +150,7 @@ const EditHarvestMatrixPage: React.FC<EditHarvestMatrixPageProps> = ({
                             </div>
 
                             <div className="d-flex justify-content-end gap-2 mt-3">
-                                <Link href={route('admin.harvest-matrices.show', matrix.id)} className="btn btn-light">
+                                <Link href={route('admin.harvest-matrices.index')} className="btn btn-light">
                                     Cancelar
                                 </Link>
                                 <Button type="submit" variant="primary" disabled={isSubmitting}>
