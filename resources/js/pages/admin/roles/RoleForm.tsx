@@ -1,5 +1,6 @@
 import ComponentContainerCard from '@/components/ComponentContainerCard';
 import TextFormInput from '@/components/form/TextFormInput';
+import TextAreaFormInput from '@/components/form/TextAreaFormInput';
 import PageTitle from '@/components/PageTitle';
 import { Role } from '@/types';
 import { router } from '@inertiajs/react';
@@ -11,7 +12,8 @@ import * as yup from 'yup';
 import { useState } from 'react';
 
 const roleSchema = yup.object({
-    name: yup.string().required('El nombre del rol es requerido'),
+    display_name: yup.string().required('El nombre del rol es requerido'),
+    description: yup.string().default(''),
 });
 
 type RoleFormData = yup.InferType<typeof roleSchema>;
@@ -28,12 +30,14 @@ const RoleForm = ({ role, title, subTitle, cardTitle }: RoleFormProps) => {
     const { handleSubmit, control } = useForm<RoleFormData>({
         resolver: yupResolver(roleSchema),
         defaultValues: {
-            name: role?.name || '',
+            display_name: role?.display_name ?? '',
+            description: role?.description || '',
         },
     });
 
     const onSubmit = (data: RoleFormData) => {
         setIsSubmitting(true);
+
         if (role) {
             router.put(route('admin.roles.update', role.id), data, {
                 onFinish: () => setIsSubmitting(false),
@@ -57,10 +61,22 @@ const RoleForm = ({ role, title, subTitle, cardTitle }: RoleFormProps) => {
                                     <div className="mb-3">
                                         <TextFormInput
                                             control={control}
-                                            name="name"
+                                            name="display_name"
                                             label="Nombre del Rol"
-                                            placeholder="Ingrese el nombre del rol"
+                                            placeholder="Ej: Super Administrador, Gerente de Cultivo"
                                             containerClassName="mb-3"
+                                        />
+                                    </div>
+                                </Col>
+                                <Col lg={12}>
+                                    <div className="mb-3">
+                                        <TextAreaFormInput
+                                            control={control}
+                                            name="description"
+                                            label="Descripción"
+                                            placeholder="Ingrese una descripción del rol"
+                                            containerClassName="mb-3"
+                                            rows={3}
                                         />
                                     </div>
                                 </Col>

@@ -21,6 +21,7 @@ class UserController extends BaseController
     {
         return Inertia::render('admin/users/index', [
             'filters' => $request->only('search'),
+            'total' => User::count(),
             'users' => new UserCollection(
                 User::with('roles')
                     ->orderBy('id')
@@ -123,19 +124,31 @@ class UserController extends BaseController
             ->with('success', 'Usuario actualizado exitosamente.');
     }
 
+    public function destroy(User $user)
+    {
+        if ($user->hasRole('administrador')) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'No se puede eliminar un usuario con rol de administrador.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Usuario eliminado exitosamente.');
+    }
+
     /**
      * Reset user password.
      */
     public function resetPassword(User $user)
     {
-        // Generate a random password
-        $newPassword = 'Temp' . rand(1000, 9999) . '!';
+        $newPassword = $user->dni;
 
         $user->update([
             'password' => Hash::make($newPassword),
         ]);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Contraseña restablecida exitosamente. Nueva contraseña: ' . $newPassword);
+            ->with('success', 'Contraseña restablecida exitosamente.');
     }
 }

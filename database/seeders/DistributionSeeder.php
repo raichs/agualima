@@ -16,256 +16,84 @@ class DistributionSeeder extends Seeder
      */
     public function run(): void
     {
-        $distributionsData = [
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'A-21'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'A-22'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'A-23'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'A-24'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'B-21'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'B-22'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'B-23'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'B-24'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'C-21'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '12', 'lot' => 'C-22'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'C-23'],
-            ['project' => 'IA', 'variety' => 'Madeira', 'shift' => '11', 'lot' => 'C-24'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'D-21'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'D-22'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'E-21'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'E-22'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'F-21'],
-            ['project' => 'IB', 'variety' => 'Biloxi', 'shift' => '13', 'lot' => 'F-22'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'A-19'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'A-20'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'B-19'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'B-20'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'C-19'],
-            ['project' => 'IB', 'variety' => 'Madeira', 'shift' => '14', 'lot' => 'C-20'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'D-19'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'D-20'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'E-19'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'E-20'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'F-19'],
-            ['project' => 'IB', 'variety' => 'Raymi', 'shift' => '15', 'lot' => 'F-20'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'A-17'],
-            ['project' => 'IIA', 'variety' => 'Madeira', 'shift' => '16', 'lot' => 'A-18'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'A-18'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'B-17'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'B-18'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'C-17'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '16', 'lot' => 'C-18'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'A-15'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'A-16'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'B-15'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'B-16'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'C-15'],
-            ['project' => 'IIA', 'variety' => 'Malibu', 'shift' => '18', 'lot' => 'C-16'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'D-17'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'D-18'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'E-17'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'E-18'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'F-17'],
-            ['project' => 'IIA', 'variety' => 'Raymi', 'shift' => '17', 'lot' => 'F-18'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'D-23'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'D-24'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'E-23'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'E-24'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'F-23'],
-            ['project' => 'IIB', 'variety' => 'Biloxi', 'shift' => '10', 'lot' => 'F-24'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'D-15'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'D-16'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'E-15'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'E-16'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'F-15'],
-            ['project' => 'IIB', 'variety' => 'Rosita', 'shift' => '19', 'lot' => 'F-16'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'A-13'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'A-14'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'B-13'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'B-14'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'C-13'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '20', 'lot' => 'C-14'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'A-11'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'B-11'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'C-11'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'A-12'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'B-12'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '22', 'lot' => 'C-12'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'A-10'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'B-10'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'C-10'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'A-9'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'B-9'],
-            ['project' => 'III', 'variety' => 'Biloxi', 'shift' => '24', 'lot' => 'C-9'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'D-13'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'D-14'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'E-13'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'E-14'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'F-13'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '21', 'lot' => 'F-14'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'D-11'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'D-12'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'E-11'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'E-12'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'F-11'],
-            ['project' => 'III', 'variety' => 'Rosita', 'shift' => '23', 'lot' => 'F-12'],
-            ['project' => 'IVA', 'variety' => 'IB5', 'shift' => '31', 'lot' => 'A-5'],
-            ['project' => 'IVA', 'variety' => 'SIN CULTIVO', 'shift' => '33', 'lot' => 'A-1'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'A-5'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'A-6'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'B-5'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'B-6'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'C-5'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '31', 'lot' => 'C-6'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'A-3'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'A-4'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'B-3'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'B-4'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'C-3'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '32', 'lot' => 'C-4'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '33', 'lot' => 'A-2'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '33', 'lot' => 'B-1'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '33', 'lot' => 'B-2'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '33', 'lot' => 'C-1'],
-            ['project' => 'IVA', 'variety' => 'Ventura', 'shift' => '33', 'lot' => 'C-2'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'A-7'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'A-8'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'B-7'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'B-8'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'C-7'],
-            ['project' => 'IVB', 'variety' => 'Ventura', 'shift' => '30', 'lot' => 'C-8'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'D-10'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'D-9'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'E-10'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'E-9'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'F-10'],
-            ['project' => 'V', 'variety' => 'Kirra', 'shift' => '25', 'lot' => 'F-9'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'D-7'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'E-7'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'F-7'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'D-8'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'E-8'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '26', 'lot' => 'F-8'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'D-5'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'D-6'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'E-5'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'E-6'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'F-5'],
-            ['project' => 'V', 'variety' => 'Rosita', 'shift' => '27', 'lot' => 'F-6'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'D-3'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'D-4'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'E-3'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'E-4'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'F-3'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '28', 'lot' => 'F-4'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'D-1'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'D-2'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'E-1'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'E-2'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'F-1'],
-            ['project' => 'V', 'variety' => 'Terrapin', 'shift' => '29', 'lot' => 'F-2'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '37', 'lot' => 'G-32'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'G-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'G-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '37', 'lot' => 'H-32'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'H-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'H-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '37', 'lot' => 'I-32'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'I-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '35', 'lot' => 'I-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'J-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'J-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'K-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'K-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'K-35'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'K-36'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'L-33'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '36', 'lot' => 'L-34'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'L-35'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'L-36'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'M-35'],
-            ['project' => 'VI', 'variety' => 'Madeira', 'shift' => '34', 'lot' => 'M-36'],
-            ['project' => 'VI', 'variety' => 'Malibu', 'shift' => '38', 'lot' => 'J-31'],
-            ['project' => 'VI', 'variety' => 'Malibu', 'shift' => '38', 'lot' => 'J-32'],
-            ['project' => 'VI', 'variety' => 'Malibu', 'shift' => '38', 'lot' => 'K-32'],
-            ['project' => 'VI', 'variety' => 'Manila', 'shift' => '38', 'lot' => 'J-29'],
-            ['project' => 'VI', 'variety' => 'Manila', 'shift' => '38', 'lot' => 'J-30'],
-            ['project' => 'VI', 'variety' => 'Manila', 'shift' => '38', 'lot' => 'J-31'],
-            ['project' => 'VI', 'variety' => 'Manila', 'shift' => '38', 'lot' => 'K-30'],
-            ['project' => 'VI', 'variety' => 'Manila', 'shift' => '38', 'lot' => 'K-31'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '37', 'lot' => 'G-31'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '37', 'lot' => 'H-31'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '37', 'lot' => 'I-31'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '37', 'lot' => 'I-32'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'G-29'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'G-30'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'H-29'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'H-30'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'I-29'],
-            ['project' => 'VI', 'variety' => 'Ventura', 'shift' => '39', 'lot' => 'I-30'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42C', 'lot' => 'G-35'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42C', 'lot' => 'G-36'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42C', 'lot' => 'H-35'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42C', 'lot' => 'H-36'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42AB', 'lot' => 'I-35'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42AB', 'lot' => 'I-36'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42AB', 'lot' => 'J-35'],
-            ['project' => 'VIAB', 'variety' => 'Madeira', 'shift' => '42AB', 'lot' => 'J-36'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6A', 'lot' => 'A-28'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6A', 'lot' => 'B-28'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6A', 'lot' => 'C-28'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6B', 'lot' => 'A-27'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6B', 'lot' => 'B-27'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '6B', 'lot' => 'C-27'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7A', 'lot' => 'A-26'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7A', 'lot' => 'B-26'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7A', 'lot' => 'C-26'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7B', 'lot' => 'A-25'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7B', 'lot' => 'B-25'],
-            ['project' => 'VII', 'variety' => 'Manila', 'shift' => '7B', 'lot' => 'C-25'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'G-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'G-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'H-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'H-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'I-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'I-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'J-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '40', 'lot' => 'J-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'K-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'K-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'L-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'L-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'M-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'M-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'N-37'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '41', 'lot' => 'N-38'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'G-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'H-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'H-40'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'I-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'I-40'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'J-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '43', 'lot' => 'J-40'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '44', 'lot' => 'K-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '44', 'lot' => 'K-40'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '44', 'lot' => 'L-39'],
-            ['project' => 'VIII', 'variety' => 'Sekoya', 'shift' => '44', 'lot' => 'M-39'],
-            ['project' => 'X', 'variety' => 'Madeira', 'shift' => '8', 'lot' => 'D-25'],
-        ];
+        $csvFile = database_path('data/data_lotes_arandanos.csv');
 
-        foreach ($distributionsData as $data) {
-            $project = Project::where('name', $data['project'])->first();
-            $variety = Variety::where('name', $data['variety'])->first();
-            $shift = Shift::where('name', $data['shift'])->first();
-            $lot = Lot::where('code', $data['lot'])->first();
+        if (!file_exists($csvFile)) {
+            $this->command->error("CSV file not found: {$csvFile}");
+            return;
+        }
+
+        $file = fopen($csvFile, 'r');
+
+        // Skip header row
+        fgetcsv($file);
+
+        $count = 0;
+        $errors = 0;
+
+        while (($row = fgetcsv($file)) !== false) {
+            // Skip empty rows
+            if (empty($row[0])) {
+                continue;
+            }
+
+            $projectName = trim($row[0]);
+            $varietyName = trim($row[1]);
+            $shiftName = trim($row[2]);
+            $lotCode = trim($row[3]);
+            $totalArea = !empty($row[4]) ? str_replace(',', '.', trim($row[4])) : null;
+            $campaignNumber = !empty($row[5]) ? trim($row[5]) : null;
+            $density = !empty($row[6]) ? trim($row[6]) : null;
+            $plantingDate = !empty($row[7]) ? $this->parseDate($row[7]) : null;
+            $pruningDate = !empty($row[8]) ? $this->parseDate($row[8]) : null;
+
+            $project = Project::where('name', $projectName)->first();
+            $variety = Variety::where('name', $varietyName)->first();
+            $shift = Shift::where('name', $shiftName)->first();
+            $lot = Lot::where('code', $lotCode)->first();
 
             if ($project && $variety && $shift && $lot) {
-                Distribution::firstOrCreate([
-                    'project_id' => $project->id,
-                    'variety_id' => $variety->id,
-                    'shift_id' => $shift->id,
-                    'lot_id' => $lot->id,
-                ]);
+                Distribution::updateOrCreate(
+                    [
+                        'project_id' => $project->id,
+                        'variety_id' => $variety->id,
+                        'shift_id' => $shift->id,
+                        'lot_id' => $lot->id,
+                    ],
+                    [
+                        'total_area' => $totalArea,
+                        'campaign_number' => $campaignNumber,
+                        'density' => $density,
+                        'planting_date' => $plantingDate,
+                        'pruning_date' => $pruningDate,
+                    ]
+                );
+                $count++;
+            } else {
+                $this->command->warn("Missing data for: Project={$projectName}, Variety={$varietyName}, Shift={$shiftName}, Lot={$lotCode}");
+                $errors++;
             }
         }
+
+        fclose($file);
+    }
+
+    /**
+     * Parse date from DD/MM/YYYY format to YYYY-MM-DD
+     */
+    private function parseDate($date): ?string
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        $date = trim($date);
+
+        // Check if date is in DD/MM/YYYY format
+        if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $date, $matches)) {
+            return "{$matches[3]}-{$matches[2]}-{$matches[1]}";
+        }
+
+        return null;
     }
 }

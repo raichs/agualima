@@ -21,6 +21,15 @@ class HarvestMatrixCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return $this->collection->map(function ($harvestMatrix) {
+            return [
+                'id' => $harvestMatrix->id,
+                'week_number' => $harvestMatrix->week_number,
+                'year' => $harvestMatrix->year,
+                'created_at' => $harvestMatrix->created_at ? \Carbon\Carbon::parse($harvestMatrix->created_at)->format('d/m/Y H:i') : null,
+                'user' => $harvestMatrix->user,
+                'is_active' => $harvestMatrix->is_active,
+            ];
+        })->toArray();
     }
 }

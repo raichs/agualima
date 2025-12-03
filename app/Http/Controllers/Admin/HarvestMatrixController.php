@@ -20,6 +20,7 @@ class HarvestMatrixController extends BaseController
     {
         return Inertia::render('admin/harvest-matrices/index', [
             'filters' => $request->only('search'),
+            'total' => HarvestMatrix::count(),
             'matrices' => new HarvestMatrixCollection(
                 HarvestMatrix::with(['user'])
                     ->filter($request->only('search'))
@@ -37,7 +38,7 @@ class HarvestMatrixController extends BaseController
     public function create(): Response
     {
         // Obtener usuarios con rol de responsable de cultivo
-        $users = \App\Models\User::role('crop_manager')->get(['id', 'name']);
+        $users = \App\Models\User::role('responsable_de_cultivo')->get(['id', 'name']);
 
         return Inertia::render('admin/harvest-matrices/create', [
             'users' => $users,
@@ -114,9 +115,9 @@ class HarvestMatrixController extends BaseController
      */
     public function update(Request $request, HarvestMatrix $harvestMatrix)
     {
-        dd($request->all());
         $validated = $request->validate([
             'rows' => 'required|array',
+            'rows.*.id' => 'nullable|exists:harvest_matrix_rows,id',
             'rows.*.variety_id' => 'required|exists:varieties,id',
             'rows.*.shift_id' => 'required|exists:shifts,id',
             'rows.*.lots' => 'required|array',
@@ -134,16 +135,34 @@ class HarvestMatrixController extends BaseController
         ]);
 
         // Procesar cada fila
+        $sentRowIds = collect($validated['rows'])->pluck('id')->filter()->toArray();
         foreach ($validated['rows'] as $rowData) {
-            // Crear o actualizar la fila
-            $row = $harvestMatrix->rows()->firstOrCreate(
-                [
+            if (isset($rowData['id'])) {
+                $row = $harvestMatrix->rows()->find($rowData['id']);
+                if ($row) {
+                    $row->update([
+                        'variety_id' => $rowData['variety_id'],
+                        'shift_id' => $rowData['shift_id'],
+                    ]);
+                } else {
+                    // If id not found, create new
+                    $row = $harvestMatrix->rows()->create([
+                        'variety_id' => $rowData['variety_id'],
+                        'shift_id' => $rowData['shift_id'],
+                    ]);
+                }
+            } else {
+                $row = $harvestMatrix->rows()->create([
                     'variety_id' => $rowData['variety_id'],
                     'shift_id' => $rowData['shift_id'],
-                ]
-            );
+                ]);
+            }
 
             // Procesar lotes de esta fila
+            // Primero eliminar datos diarios de los lotes existentes
+            $row->lots->each(function ($lot) {
+                $lot->dailyData()->delete();
+            });
             $row->lots()->delete(); // Limpiar lotes existentes
             foreach ($rowData['lots'] as $lotData) {
                 $lot = $row->lots()->create([
@@ -167,7 +186,16 @@ class HarvestMatrixController extends BaseController
             $this->calculateRowTotals($row);
         }
 
-        return redirect()->route('admin.harvest-matrices.show', $harvestMatrix)
+        // Eliminar filas que no están en los datos enviados
+        $harvestMatrix->rows()->whereNotIn('id', $sentRowIds)->each(function ($row) {
+            $row->lots->each(function ($lot) {
+                $lot->dailyData()->delete();
+            });
+            $row->lots()->delete();
+            $row->delete();
+        });
+
+        return redirect()->route('admin.harvest-matrices.index')
             ->with('success', 'Matriz de cosecha actualizada exitosamente.');
     }
 

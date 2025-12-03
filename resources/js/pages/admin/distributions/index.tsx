@@ -8,8 +8,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
 
 const DistributionsPage = () => {
-    const { distributions } = usePage<{
+    const { distributions, total } = usePage<{
         distributions: PaginatedData<Distribution>;
+        total: number;
     }>().props;
 
     const { data, meta } = distributions;
@@ -22,7 +23,9 @@ const DistributionsPage = () => {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex align-items-center justify-content-between border-bottom border-light">
-                            <h4 className="header-title">Lista de Distribuciones</h4>
+                            <div className="d-flex align-items-start gap-2 flex-column">
+                                <h4 className="header-title mb-0">Lista de Distribuciones <span className="badge bg-primary ms-1 p-1">{total}</span></h4>
+                            </div>
                             <div>
                                 <Link href={route('admin.distributions.create')} className="btn btn-primary">
                                     <IconifyIcon icon="tabler:plus" className="me-1" /> Nueva Distribución
@@ -35,6 +38,11 @@ const DistributionsPage = () => {
                                 { label: 'Variedad', name: 'variety_name' },
                                 { label: 'Turno', name: 'shift_name' },
                                 { label: 'Lote', name: 'lot_code' },
+                                { label: 'Área', name: 'total_area' },
+                                { label: 'Nº Campaña', name: 'campaign_number' },
+                                { label: 'Densidad', name: 'density' },
+                                { label: 'Fecha de siembra', name: 'planting_date' },
+                                { label: 'Fecha de poda', name: 'pruning_date' },
                             ]}
                             rows={data}
                             showRoute="admin.distributions.show"

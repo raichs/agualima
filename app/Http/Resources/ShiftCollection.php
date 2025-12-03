@@ -12,10 +12,14 @@ class ShiftCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
-        return $this->collection->map->only(
-            'id', 'name', 'description'
-        );
+        return $this->collection->map(function ($shift) {
+            return [
+                'id' => $shift->id,
+                'name' => $shift->name,
+                'is_active' => $shift->is_active,
+            ];
+        })->toArray();
     }
 }

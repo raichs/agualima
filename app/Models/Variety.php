@@ -13,11 +13,30 @@ class Variety extends Model implements Auditable
 
     protected $fillable = [
         'name',
+        'nursery_id',
+        'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function nursery()
+    {
+        return $this->belongsTo(Nursery::class);
+    }
 
     public function lots()
     {
         return $this->hasMany(Lot::class);
+    }
+
+    public function distributions()
+    {
+        return $this->hasMany(Distribution::class);
     }
 
     /**

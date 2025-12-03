@@ -4,12 +4,15 @@ import Table from '@/components/Table/Table';
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
 import MainLayout from '@/layouts/MainLayout';
 import { PaginatedData, User } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { confirmResetPassword } from '@/utils/sweetalert';
 
 const UsersPage = () => {
-    const { users } = usePage<{
+    const { users, total } = usePage<{
         users: PaginatedData<User>;
+        total: number;
     }>().props;
 
     const { data, meta } = users;
@@ -22,7 +25,9 @@ const UsersPage = () => {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex align-items-center justify-content-between border-bottom border-light">
-                            <h4 className="header-title">Lista de Usuarios</h4>
+                            <div className="d-flex align-items-start gap-2 flex-column">
+                                <h4 className="header-title mb-0">Lista de Usuarios <span className="badge bg-primary ms-1 p-1">{total}</span></h4>
+                            </div>
                             <div>
                                 <Link href={route('admin.users.create')} className="btn btn-primary">
                                     <IconifyIcon icon="tabler:plus" className="me-1" /> Nuevo Usuario
@@ -41,17 +46,15 @@ const UsersPage = () => {
                             editRoute="admin.users.edit"
                             deleteRoute="admin.users.destroy"
                             customActions={(user) => (
-                                <button
-                                    className="btn btn-sm btn-warning me-2"
-                                    onClick={() => {
-                                        if (confirm('¿Está seguro de restablecer la contraseña de este usuario? Se generará una nueva contraseña temporal.')) {
-                                            router.post(route('admin.users.reset-password', user.id));
-                                        }
-                                    }}
+                                <Button
+                                    variant="soft-warning"
+                                    size="sm"
+                                    className="btn-icon rounded-circle me-2"
+                                    onClick={() => confirmResetPassword(route('admin.users.reset-password', user.id))}
                                     title="Restablecer contraseña"
                                 >
-                                    🔑 Reset
-                                </button>
+                                    <IconifyIcon icon="tabler:key" />
+                                </Button>
                             )}
                             deleteOptions={{
                                 title: '¿Eliminar usuario?',

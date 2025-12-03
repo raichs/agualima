@@ -18,6 +18,7 @@ class LotController extends BaseController
     {
         return Inertia::render('admin/lots/index', [
             'filters' => $request->only('search'),
+            'total' => Lot::count(),
             'lots' => new LotCollection(
                 Lot::orderBy('id')
                     ->filter($request->only('search'))
@@ -94,6 +95,12 @@ class LotController extends BaseController
      */
     public function destroy(Lot $lot)
     {
+        // Verificar si tiene distribuciones asociadas
+        if ($lot->distributions()->count() > 0) {
+            return redirect()->route('admin.lots.index')
+                ->with('error', 'No se puede eliminar el lote porque tiene distribuciones asociadas.');
+        }
+
         $lot->delete();
 
         return redirect()->route('admin.lots.index')

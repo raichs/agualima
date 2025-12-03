@@ -16,6 +16,16 @@ class Distribution extends Model implements Auditable
         'variety_id',
         'shift_id',
         'lot_id',
+        'total_area',
+        'campaign_number',
+        'density',
+        'planting_date',
+        'pruning_date',
+    ];
+
+    protected $casts = [
+        'planting_date' => 'date',
+        'pruning_date' => 'date',
     ];
 
     public function project()

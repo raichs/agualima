@@ -6,7 +6,7 @@ use App\Enums\RoleEnum;
 use App\Enums\PermissionEnum;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleSeeder extends Seeder
 {
@@ -27,24 +27,26 @@ class RoleSeeder extends Seeder
         }
 
         // Create roles with specific permissions
-        $this->createSuperAdminRole();
-        $this->createManagementRole();
         $this->createAdministratorRole();
+        $this->createManagementRole();
         $this->createCropManagerRole();
         $this->createViewerRole();
     }
 
     /**
-     * Create Super Admin role with all permissions
+     * Create Administrator role with all permissions
      */
-    private function createSuperAdminRole(): void
+    private function createAdministratorRole(): void
     {
-        $role = Role::firstOrCreate([
-            'name' => RoleEnum::SUPER_ADMIN->value,
+        $role = Role::updateOrCreate([
+            'name' => RoleEnum::ADMINISTRATOR->value,
             'guard_name' => 'web'
+        ], [
+            'display_name' => 'Administrador',
+            'description' => 'Usuario con acceso completo a todas las funciones del sistema. Puede gestionar usuarios, roles, permisos y todos los módulos.',
         ]);
 
-        // Super admin has ALL permissions
+        // Administrator has ALL permissions
         $role->syncPermissions(Permission::all());
     }
 
@@ -53,9 +55,12 @@ class RoleSeeder extends Seeder
      */
     private function createManagementRole(): void
     {
-        $role = Role::firstOrCreate([
+        $role = Role::updateOrCreate([
             'name' => RoleEnum::MANAGEMENT->value,
             'guard_name' => 'web'
+        ], [
+            'display_name' => 'Gerencia',
+            'description' => 'Usuario con permisos de visualización general. Puede ver todos los módulos pero no modificar datos.',
         ]);
 
         $role->syncPermissions([
@@ -73,55 +78,16 @@ class RoleSeeder extends Seeder
     }
 
     /**
-     * Create Administrator role
-     */
-    private function createAdministratorRole(): void
-    {
-        $role = Role::firstOrCreate([
-            'name' => RoleEnum::ADMINISTRATOR->value,
-            'guard_name' => 'web'
-        ]);
-
-        $role->syncPermissions([
-            // Projects
-            PermissionEnum::VIEW_PROJECTS->value,
-            PermissionEnum::CREATE_PROJECTS->value,
-            PermissionEnum::EDIT_PROJECTS->value,
-            PermissionEnum::DELETE_PROJECTS->value,
-            // Varieties
-            PermissionEnum::VIEW_VARIETIES->value,
-            PermissionEnum::CREATE_VARIETIES->value,
-            PermissionEnum::EDIT_VARIETIES->value,
-            PermissionEnum::DELETE_VARIETIES->value,
-            // Shifts
-            PermissionEnum::VIEW_SHIFTS->value,
-            PermissionEnum::CREATE_SHIFTS->value,
-            PermissionEnum::EDIT_SHIFTS->value,
-            PermissionEnum::DELETE_SHIFTS->value,
-            // Lots
-            PermissionEnum::VIEW_LOTS->value,
-            PermissionEnum::CREATE_LOTS->value,
-            PermissionEnum::EDIT_LOTS->value,
-            PermissionEnum::DELETE_LOTS->value,
-            // Distributions
-            PermissionEnum::VIEW_DISTRIBUTIONS->value,
-            PermissionEnum::CREATE_DISTRIBUTIONS->value,
-            PermissionEnum::EDIT_DISTRIBUTIONS->value,
-            PermissionEnum::DELETE_DISTRIBUTIONS->value,
-            // Reports
-            PermissionEnum::VIEW_REPORTS->value,
-            PermissionEnum::EXPORT_REPORTS->value,
-        ]);
-    }
-
-    /**
      * Create Crop Manager role (Responsable de Cultivo)
      */
     private function createCropManagerRole(): void
     {
-        $role = Role::firstOrCreate([
+        $role = Role::updateOrCreate([
             'name' => RoleEnum::CROP_MANAGER->value,
             'guard_name' => 'web'
+        ], [
+            'display_name' => 'Responsable de Cultivo',
+            'description' => 'Usuario responsable de la gestión operativa de cultivos. Puede gestionar lotes y distribuciones, con permisos limitados en otras áreas.',
         ]);
 
         $role->syncPermissions([
@@ -147,9 +113,12 @@ class RoleSeeder extends Seeder
      */
     private function createViewerRole(): void
     {
-        $role = Role::firstOrCreate([
+        $role = Role::updateOrCreate([
             'name' => RoleEnum::VIEWER->value,
             'guard_name' => 'web'
+        ], [
+            'display_name' => 'Visualizador',
+            'description' => 'Usuario con permisos de solo lectura. Puede ver toda la información del sistema pero no puede modificar nada.',
         ]);
 
         $role->syncPermissions([

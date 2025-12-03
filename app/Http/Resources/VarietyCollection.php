@@ -12,10 +12,16 @@ class VarietyCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
-        return $this->collection->map->only(
-            'id', 'name', 'description'
-        );
+        return $this->collection->map(function ($variety) {
+            return [
+                'id' => $variety->id,
+                'name' => $variety->name,
+                'description' => $variety->description,
+                'nursery_name' => $variety->nursery?->name,
+                'is_active' => $variety->is_active,
+            ];
+        })->toArray();
     }
 }

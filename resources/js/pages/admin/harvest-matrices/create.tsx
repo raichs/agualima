@@ -4,11 +4,12 @@ import PageTitle from '@/components/PageTitle';
 import MainLayout from '@/layouts/MainLayout';
 import { router, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { Button, Col, FormLabel, FormSelect, Row } from 'react-bootstrap';
-import { useForm, Controller } from 'react-hook-form';
+import { Button, Col, FormLabel, Row } from 'react-bootstrap';
+import { useForm, Controller, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState } from 'react';
+import Select from 'react-select';
 
 const matrixSchema = yup.object({
     week_number: yup.number()
@@ -17,7 +18,7 @@ const matrixSchema = yup.object({
         .max(53, 'La semana debe ser entre 1 y 53'),
     year: yup.number()
         .required('El año es requerido')
-        .min(2020, 'El año debe ser mayor a 2020')
+        .min(2024, 'El año debe ser 2024 o posterior')
         .max(2100, 'El año debe ser menor a 2100'),
     user_id: yup.string().required('El responsable es requerido'),
 });
@@ -33,12 +34,25 @@ const CreateHarvestMatrixPage = () => {
 
     // Función para obtener el número de semana
     const getWeekNumber = (date: Date) => {
-        const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-        const dayNum = d.getUTCDay() || 7;
-        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-        return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+        const d = new Date(date);
+        d.setHours(0, 0, 0, 0);
+        d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+        const yearStart = new Date(d.getFullYear(), 0, 1);
+        return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
     };
+
+    // Función para obtener el número máximo de semanas en un año
+    const getMaxWeeksInYear = (year: number) => {
+        const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+        const jan1Day = new Date(year, 0, 1).getDay();
+        if ((isLeapYear && jan1Day === 3) || (!isLeapYear && jan1Day === 4)) {
+            return 53;
+        } else {
+            return 52;
+        }
+    };
+
+    const yearOptions = [2024, 2025, 2026];
 
     const { handleSubmit, control } = useForm<MatrixFormData>({
         resolver: yupResolver(matrixSchema),
@@ -48,6 +62,14 @@ const CreateHarvestMatrixPage = () => {
             user_id: '',
         },
     });
+
+    const watchedYear = useWatch({ control, name: 'year' });
+    const maxWeeks = getMaxWeeksInYear(watchedYear || currentYear);
+    const weekOptions = Array.from({ length: maxWeeks }, (_, i) => i + 1);
+
+    const yearSelectOptions = yearOptions.map(year => ({ value: year, label: year.toString() }));
+    const weekSelectOptions = weekOptions.map(week => ({ value: week, label: `Semana ${week}` }));
+    const userSelectOptions = users.map(user => ({ value: user.id.toString(), label: user.name }));
 
     const onSubmit = (data: MatrixFormData) => {
         setIsSubmitting(true);
@@ -65,24 +87,72 @@ const CreateHarvestMatrixPage = () => {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Row>
                                 <Col lg={4}>
-                                    <TextFormInput
-                                        control={control}
-                                        name="week_number"
-                                        label="Número de Semana"
-                                        type="number"
-                                        placeholder="1-53"
-                                        containerClassName="mb-3"
-                                    />
+                                    <div className="mb-3">
+                                        <FormLabel>Año</FormLabel>
+                                        <Controller
+                                            name="year"
+                                            control={control}
+                                            render={({ field, fieldState }) => (
+                                                <>
+                                                    <Select
+                                                        value={yearSelectOptions.find((option) => option.value === field.value) || null}
+                                                        onChange={(option) => field.onChange(option?.value || null)}
+                                                        options={yearSelectOptions}
+                                                        placeholder="Seleccione un año"
+                                                        classNamePrefix="react-select"
+                                                        styles={{
+                                                            control: (provided, state) => ({
+                                                                ...provided,
+                                                                borderColor: fieldState.error ? '#dc3545' : provided.borderColor,
+                                                                '&:hover': {
+                                                                    borderColor: fieldState.error ? '#dc3545' : provided.borderColor
+                                                                }
+                                                            })
+                                                        }}
+                                                    />
+                                                    {fieldState.error && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {fieldState.error.message}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                        />
+                                    </div>
                                 </Col>
                                 <Col lg={4}>
-                                    <TextFormInput
-                                        control={control}
-                                        name="year"
-                                        label="Año"
-                                        type="number"
-                                        placeholder="2025"
-                                        containerClassName="mb-3"
-                                    />
+                                    <div className="mb-3">
+                                        <FormLabel>Número de Semana</FormLabel>
+                                        <Controller
+                                            name="week_number"
+                                            control={control}
+                                            render={({ field, fieldState }) => (
+                                                <>
+                                                    <Select
+                                                        value={weekSelectOptions.find((option) => option.value === field.value) || null}
+                                                        onChange={(option) => field.onChange(option?.value || null)}
+                                                        options={weekSelectOptions}
+                                                        placeholder="Seleccione una semana"
+                                                        classNamePrefix="react-select"
+                                                        styles={{
+                                                            control: (provided, state) => ({
+                                                                ...provided,
+                                                                borderColor: fieldState.error ? '#dc3545' : provided.borderColor,
+                                                                '&:hover': {
+                                                                    borderColor: fieldState.error ? '#dc3545' : provided.borderColor
+                                                                }
+                                                            })
+                                                        }}
+                                                    />
+                                                    {fieldState.error && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {fieldState.error.message}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                        />
+                                    </div>
                                 </Col>
                                 <Col lg={4}>
                                     <div className="mb-3">
@@ -92,17 +162,22 @@ const CreateHarvestMatrixPage = () => {
                                             control={control}
                                             render={({ field, fieldState }) => (
                                                 <>
-                                                    <FormSelect
-                                                        {...field}
-                                                        isInvalid={!!fieldState.error}
-                                                    >
-                                                        <option value="">Seleccione un responsable</option>
-                                                        {users.map((user) => (
-                                                            <option key={user.id} value={user.id.toString()}>
-                                                                {user.name}
-                                                            </option>
-                                                        ))}
-                                                    </FormSelect>
+                                                    <Select
+                                                        value={userSelectOptions.find((option) => option.value === field.value) || null}
+                                                        onChange={(option) => field.onChange(option?.value || null)}
+                                                        options={userSelectOptions}
+                                                        placeholder="Seleccione un responsable"
+                                                        classNamePrefix="react-select"
+                                                        styles={{
+                                                            control: (provided, state) => ({
+                                                                ...provided,
+                                                                borderColor: fieldState.error ? '#dc3545' : provided.borderColor,
+                                                                '&:hover': {
+                                                                    borderColor: fieldState.error ? '#dc3545' : provided.borderColor
+                                                                }
+                                                            })
+                                                        }}
+                                                    />
                                                     {fieldState.error && (
                                                         <div className="invalid-feedback d-block">
                                                             {fieldState.error.message}

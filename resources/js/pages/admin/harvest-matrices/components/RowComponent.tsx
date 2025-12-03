@@ -248,7 +248,8 @@ export const RowComponent: React.FC<RowComponentProps> = ({
                             control={control}
                             render={({ field: inputField }) => (
                                 <input
-                                    {...inputField}
+                                    value={inputField.value || 0}
+                                    onChange={(e) => inputField.onChange(parseFloat(e.target.value) || 0)}
                                     type="number"
                                     className="form-control form-control-sm harvest-matrix__input--md"
                                     min="0"
@@ -307,7 +308,8 @@ export const RowComponent: React.FC<RowComponentProps> = ({
                                     control={control}
                                     render={({ field: inputField }) => (
                                         <input
-                                            {...inputField}
+                                            value={inputField.value || 0}
+                                            onChange={(e) => inputField.onChange(parseFloat(e.target.value) || 0)}
                                             type="number"
                                             className="form-control form-control-sm harvest-matrix__input--sm"
                                             placeholder="Freq"
@@ -328,16 +330,16 @@ export const RowComponent: React.FC<RowComponentProps> = ({
                                     control={control}
                                     render={({ field: inputField }) => (
                                         <input
-                                            {...inputField}
+                                            value={inputField.value || 0}
+                                            onChange={(e) => {
+                                                const value = e.target.value === '' ? '' : parseFloat(e.target.value);
+                                                inputField.onChange(value);
+                                            }}
                                             type="number"
                                             className="form-control form-control-sm harvest-matrix__input--sm"
                                             placeholder="Kg/día"
                                             min="0"
                                             step="0.1"
-                                            onChange={(e) => {
-                                                const value = e.target.value === '' ? '' : parseFloat(e.target.value);
-                                                inputField.onChange(value);
-                                            }}
                                         />
                                     )}
                                 />
@@ -353,7 +355,8 @@ export const RowComponent: React.FC<RowComponentProps> = ({
                                     control={control}
                                     render={({ field: inputField }) => (
                                         <input
-                                            {...inputField}
+                                            value={inputField.value || 0}
+                                            onChange={(e) => inputField.onChange(parseInt(e.target.value) || 0)}
                                             type="number"
                                             className="form-control form-control-sm harvest-matrix__input--sm"
                                             placeholder="Jornales"

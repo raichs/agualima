@@ -46,14 +46,39 @@ export interface User {
     role_id?: number;
     role_value?: string;   // Valor en inglés (super_admin)
     role_name?: string;    // Valor traducido (Super Administrador)
+    is_active?: boolean;
     [key: string]: unknown; // This allows for additional properties...
 }
 
 export interface Role {
   id: number;
-  name: string;          // Valor en inglés (super_admin, management, etc.)
-  label?: string;        // Valor traducido (Super Administrador, Gerencia, etc.)
+  name: string;          // Valor en inglés con guiones bajos (super_admin, crop_manager)
+  display_name: string;  // Nombre para mostrar en español
+  label?: string;        // Para compatibilidad (igual a display_name)
+  description?: string | null;
+  is_active?: boolean;
   guard_name?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Country {
+  id: number;
+  name: string;
+  code: string;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Nursery {
+  id: number;
+  name: string;
+  description?: string | null;
+  country_id: number;
+  country_name?: string;
+  country?: Country;
+  is_active?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -62,11 +87,18 @@ export interface Project {
   id: number;
   name: string;
   description: string;
+  is_active?: boolean;
 }
 
 export interface Variety {
   id: number;
   name: string;
+  nursery_id?: number;
+  nursery?: {
+    id: number;
+    name: string;
+  };
+  is_active?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -74,6 +106,7 @@ export interface Variety {
 export interface Shift {
   id: number;
   name: string;
+  is_active?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -83,6 +116,7 @@ export interface Lot {
   code: string;
   name: string;
   description?: string;
+  is_active?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -98,6 +132,12 @@ export interface Distribution {
   lot_id: number;
   lot_code: string;
   lot_name: string;
+  total_area?: number | null;
+  campaign_number?: number | null;
+  density?: number | null;
+  planting_date?: string | null;
+  pruning_date?: string | null;
+  is_active?: boolean;
   created_at?: string;
   updated_at?: string;
 }

@@ -27,7 +27,7 @@ const FlashMessages = () => {
                 draggable: true,
             });
         }
-    }, [flash.success, flash.error]);
+    }, [flash.success, flash.error, flash.timestamp]);
 
     return null;
 };

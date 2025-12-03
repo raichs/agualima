@@ -22,6 +22,7 @@ class DistributionController extends BaseController
     {
         return Inertia::render('admin/distributions/index', [
             'filters' => $request->only('search'),
+            'total' => Distribution::count(),
             'distributions' => new DistributionCollection(
                 Distribution::with(['project', 'variety', 'shift', 'lot'])
                     ->orderBy('id')
@@ -55,6 +56,11 @@ class DistributionController extends BaseController
             'variety_id' => 'required|exists:varieties,id',
             'shift_id' => 'required|exists:shifts,id',
             'lot_id' => 'required|exists:lots,id',
+            'total_area' => 'nullable|numeric|min:0',
+            'campaign_number' => 'nullable|integer|min:0',
+            'density' => 'nullable|numeric|min:0',
+            'planting_date' => 'nullable|date',
+            'pruning_date' => 'nullable|date',
         ]);
 
         // Verificar si ya existe esta combinación
@@ -115,6 +121,11 @@ class DistributionController extends BaseController
             'variety_id' => 'required|exists:varieties,id',
             'shift_id' => 'required|exists:shifts,id',
             'lot_id' => 'required|exists:lots,id',
+            'total_area' => 'nullable|numeric|min:0',
+            'campaign_number' => 'nullable|integer|min:0',
+            'density' => 'nullable|numeric|min:0',
+            'planting_date' => 'nullable|date',
+            'pruning_date' => 'nullable|date',
         ]);
 
         // Verificar si ya existe esta combinación (excepto el registro actual)

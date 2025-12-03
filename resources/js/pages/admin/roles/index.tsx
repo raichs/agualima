@@ -8,8 +8,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
 
 const RolesPage = () => {
-    const { roles } = usePage<{
+    const { roles, total } = usePage<{
         roles: PaginatedData<Role>;
+        total: number;
     }>().props;
 
     const { data, meta } = roles;
@@ -22,7 +23,9 @@ const RolesPage = () => {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex align-items-center justify-content-between border-bottom border-light">
-                            <h4 className="header-title">Lista de Roles</h4>
+                            <div className="d-flex align-items-start gap-2 flex-column">
+                                <h4 className="header-title mb-0">Lista de Roles <span className="badge bg-primary ms-1 p-1">{total}</span></h4>
+                            </div>
                             <div>
                                 <Link href={route('admin.roles.create')} className="btn btn-primary">
                                     <IconifyIcon icon="tabler:plus" className="me-1" /> Nuevo Rol
@@ -31,7 +34,8 @@ const RolesPage = () => {
                         </CardHeader>
                         <Table
                             columns={[
-                                { label: 'Nombre', name: 'label' },
+                                { label: 'Nombre', name: 'display_name' },
+                                { label: 'Descripción', name: 'description' },
                             ]}
                             rows={data}
                             showRoute="admin.roles.show"

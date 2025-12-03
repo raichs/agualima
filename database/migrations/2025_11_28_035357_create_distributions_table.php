@@ -17,9 +17,15 @@ return new class extends Migration
             $table->foreignId('variety_id')->constrained()->restrictOnDelete();
             $table->foreignId('shift_id')->constrained()->restrictOnDelete();
             $table->foreignId('lot_id')->constrained()->restrictOnDelete();
+            $table->decimal('total_area', 10, 2)->nullable();
+            $table->integer('campaign_number')->nullable();
+            $table->decimal('density', 10, 2)->nullable();
+            $table->date('planting_date')->nullable();
+            $table->date('pruning_date')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
-            
+
             // Unique constraint para evitar duplicados
             $table->unique(['project_id', 'variety_id', 'shift_id', 'lot_id'], 'unique_distribution');
         });

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\RoleEnum;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -15,20 +14,6 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        $role = $this->roles->first();
-        $roleValue = $role?->name;
-
-        // Traducir el rol si es un enum válido
-        $roleLabel = $roleValue;
-        if ($roleValue) {
-            try {
-                $roleEnum = RoleEnum::from($roleValue);
-                $roleLabel = $roleEnum->label();
-            } catch (\ValueError $e) {
-                $roleLabel = $roleValue;
-            }
-        }
-
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
@@ -36,10 +21,10 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'dni' => $this->dni,
             'email' => $this->email,
-            'roles' => $this->roles->pluck('name'),
-            'role_id' => $role?->id,
-            'role_value' => $roleValue,
-            'role_name' => $roleLabel,
+            'roles' => $this->roles->pluck('display_name'),
+            'role_id' => $this->roles->first()?->id,
+            'role_name' => $this->roles->first()?->display_name,
+            'is_active' => $this->is_active,
         ];
     }
 }

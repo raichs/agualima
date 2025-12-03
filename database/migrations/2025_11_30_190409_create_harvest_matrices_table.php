@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('week_number');
             $table->unsignedInteger('year');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
 

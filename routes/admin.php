@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\LotController;
 use App\Http\Controllers\Admin\DistributionController;
 use App\Http\Controllers\Admin\HarvestMatrixController;
+use App\Http\Controllers\Admin\NurseryController;
 
 Route::prefix('admin')->as('admin.')->middleware(['auth', 'verified'])->group(function () {
 
@@ -28,6 +29,10 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'verified'])->group(fu
         'lots' => LotController::class,
         'distributions' => DistributionController::class,
         'harvest-matrices' => HarvestMatrixController::class,
+    ]);
+
+    Route::resource('nurseries', NurseryController::class)->parameters([
+        'nurseries' => 'nursery'
     ]);
 
     // Additional user routes

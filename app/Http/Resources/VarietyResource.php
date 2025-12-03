@@ -18,6 +18,9 @@ class VarietyResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'nursery_id' => $this->nursery_id,
+            'nursery' => $this->whenLoaded('nursery'),
+            'is_active' => $this->is_active,
         ];
     }
 }

@@ -54,12 +54,4 @@ class HarvestMatrixRow extends Model
     {
         return $this->hasMany(HarvestMatrixRowLot::class);
     }
-
-    /**
-     * Relación con datos diarios
-     */
-    public function dailyData(): HasMany
-    {
-        return $this->hasMany(HarvestMatrixDailyData::class);
-    }
 }

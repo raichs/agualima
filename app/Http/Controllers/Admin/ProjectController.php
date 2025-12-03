@@ -17,6 +17,7 @@ class ProjectController extends BaseController
     {
         return Inertia::render('admin/projects/index', [
             'filters' => $request->only('search'),
+            'total' => Project::count(),
             'projects' => new ProjectCollection(
                 Project::orderBy('id')
                     ->filter($request->only('search'))
@@ -75,7 +76,6 @@ class ProjectController extends BaseController
      */
     public function update(Request $request, Project $project)
     {
-        throw new \Exception('Error de prueba Sentry');
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -92,6 +92,12 @@ class ProjectController extends BaseController
      */
     public function destroy(Project $project)
     {
+        // Verificar si tiene distribuciones asociadas
+        if ($project->distributions()->count() > 0) {
+            return redirect()->route('admin.projects.index')
+                ->with('error', 'No se puede eliminar el proyecto porque tiene distribuciones asociadas.');
+        }
+
         $project->delete();
 
         return redirect()->route('admin.projects.index')

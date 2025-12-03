@@ -8,8 +8,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { Badge, Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
 
 const HarvestMatricesPage = () => {
-    const { matrices } = usePage<{
+    const { matrices, total } = usePage<{
         matrices: PaginatedData<HarvestMatrix>;
+        total: number;
     }>().props;
 
     const { data, meta } = matrices;
@@ -19,13 +20,7 @@ const HarvestMatricesPage = () => {
     const dataWithCalculatedFields = data.map(matrix => ({
         ...matrix,
         name: matrix.user?.name || 'Sin asignar',
-        week_display: `Semana ${matrix.week_number} - ${matrix.year}`,
-        status_badge: (
-            <Badge bg="secondary">
-                Activa
-            </Badge>
-        ),
-        created_at_display: new Date(matrix.created_at).toLocaleDateString('es-ES'),
+        week_display: `Semana ${matrix.week_number} - ${matrix.year}`
     }));
 
     return (
@@ -35,7 +30,9 @@ const HarvestMatricesPage = () => {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex align-items-center justify-content-between border-bottom border-light">
-                            <h4 className="header-title">Lista de Matrices de Cosecha</h4>
+                            <div className="d-flex align-items-start gap-2 flex-column">
+                                <h4 className="header-title mb-0">Lista de Matrices de Cosecha <span className="badge bg-primary ms-1 p-1">{total}</span></h4>
+                            </div>
                             <div>
                                 <Link href={route('admin.harvest-matrices.create')} className="btn btn-primary">
                                     <IconifyIcon icon="tabler:plus" className="me-1" /> Nueva Matriz
@@ -46,11 +43,9 @@ const HarvestMatricesPage = () => {
                             columns={[
                                 { label: 'Responsable', name: 'name' },
                                 { label: 'Semana', name: 'week_display' },
-                                { label: 'Estado', name: 'status_badge' },
-                                { label: 'Creada', name: 'created_at_display' },
+                                { label: 'Fecha de registro', name: 'created_at' },
                             ]}
                             rows={dataWithCalculatedFields}
-                            showRoute="admin.harvest-matrices.show"
                             editRoute="admin.harvest-matrices.edit"
                             deleteRoute="admin.harvest-matrices.destroy"
                             deleteOptions={{

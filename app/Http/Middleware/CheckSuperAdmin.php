@@ -16,7 +16,7 @@ class CheckSuperAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->hasRole(RoleEnum::SUPER_ADMIN->value)) {
+        if (!$request->user() || !$request->user()->hasRole(RoleEnum::ADMINISTRATOR->value)) {
             abort(403, 'No tienes permisos para acceder a esta sección.');
         }
 

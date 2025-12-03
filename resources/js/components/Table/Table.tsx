@@ -16,6 +16,7 @@ interface TableProps<T extends { id: number | string }> {
   showRoute?: string;
   editRoute?: string;
   deleteRoute?: string;
+  customActions?: (row: T) => React.ReactNode;
   deleteOptions?: {
     title?: string;
     text?: string;
@@ -34,9 +35,13 @@ export default function Table<T extends { id: number | string }>({
   showRoute,
   editRoute,
   deleteRoute,
+  customActions,
   deleteOptions = {},
   emptyMessage = 'No hay registros disponibles'
 }: TableProps<T>) {
+  // Check if rows have is_active property
+  const hasStatusColumn = rows.length > 0 && 'is_active' in rows[0];
+  
   const handleDelete = async (id: number | string) => {
     if (deleteRoute) {
       await confirmDelete(route(deleteRoute, id), deleteOptions);
@@ -51,6 +56,11 @@ export default function Table<T extends { id: number | string }>({
             {columns?.map(column => (
               <th key={column.name}>{column.label}</th>
             ))}
+            {hasStatusColumn && (
+              <th className="text-center" style={{ width: 100 }}>
+                Estado
+              </th>
+            )}
             {showActions && (
               <th className="text-center" style={{ width: 120 }}>
                 Acciones
@@ -63,7 +73,7 @@ export default function Table<T extends { id: number | string }>({
             <tr>
               <td
                 className="text-center py-4"
-                colSpan={columns.length + (showActions ? 2 : 1)}
+                colSpan={columns.length + (showActions ? 1 : 0) + (hasStatusColumn ? 1 : 0) + 1}
               >
                 {emptyMessage}
               </td>
@@ -76,9 +86,16 @@ export default function Table<T extends { id: number | string }>({
                   <td key={column.name}>
                     {column.renderCell
                       ? column.renderCell(row)
-                      : get(row, column.name) ?? 'N/A'}
+                      : get(row, column.name) ?? '-'}
                   </td>
                 ))}
+                {hasStatusColumn && (
+                  <td className="text-center">
+                    <span className={`badge bg-${(row as any).is_active ? 'success' : 'danger'} p-1 fs-11`}>
+                      {(row as any).is_active ? 'Activo' : 'Inactivo'}
+                    </span>
+                  </td>
+                )}
                 {showActions && (
                   <td className="pe-3">
                     <div className="hstack gap-1 justify-content-end">
@@ -114,6 +131,7 @@ export default function Table<T extends { id: number | string }>({
                           <IconifyIcon icon="tabler:trash" />
                         </Button>
                       )}
+                      {customActions && customActions(row)}
                     </div>
                   </td>
                 )}

@@ -12,10 +12,15 @@ class ProjectCollection extends ResourceCollection
      *
      * @return array<int|string, mixed>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
-        return $this->collection->map->only(
-            'id', 'name', 'description'
-        );
+        return $this->collection->map(function ($project) {
+            return [
+                'id' => $project->id,
+                'name' => $project->name,
+                'description' => $project->description,
+                'is_active' => $project->is_active,
+            ];
+        })->toArray();
     }
 }

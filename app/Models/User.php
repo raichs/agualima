@@ -26,6 +26,7 @@ class User extends Authenticatable implements Auditable
         'dni',
         'email',
         'password',
+        'is_active',
     ];
 
     /**
@@ -48,6 +49,7 @@ class User extends Authenticatable implements Auditable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -73,24 +75,6 @@ class User extends Authenticatable implements Auditable
                     ->orWhere('email', 'like', '%'.$search.'%');
             });
         });
-    }
-
-    /**
-     * Get the translated role name
-     */
-    public function getRoleNameAttribute(): string
-    {
-        $role = $this->roles->first();
-        if (!$role) {
-            return 'Sin Rol';
-        }
-
-        try {
-            $roleEnum = \App\Enums\RoleEnum::from($role->name);
-            return $roleEnum->label();
-        } catch (\ValueError $e) {
-            return $role->name;
-        }
     }
 
     /**

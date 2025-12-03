@@ -6,7 +6,7 @@ use App\Http\Resources\RoleCollection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleController extends BaseController
 {
@@ -15,14 +15,16 @@ class RoleController extends BaseController
      */
     public function index(Request $request): Response
     {
+        $query = Role::orderBy('id')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            });
+
         return Inertia::render('admin/roles/index', [
             'filters' => $request->only('search'),
+            'total' => Role::count(),
             'roles' => new RoleCollection(
-                Role::orderBy('id')
-                    ->when($request->input('search'), function ($query, $search) {
-                        $query->where('name', 'like', "%{$search}%");
-                    })
-                    ->paginate()
+                $query->paginate()
                     ->appends($request->all())
             ),
         ]);
@@ -42,7 +44,16 @@ class RoleController extends BaseController
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name',
+            'display_name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        // Generate system name from display_name
+        $validated['name'] = $this->generateSystemName($validated['display_name']);
+
+        // Check if name is unique
+        $request->validate([
+            'name' => 'unique:roles,name',
         ]);
 
         Role::create($validated);
@@ -77,7 +88,16 @@ class RoleController extends BaseController
     public function update(Request $request, Role $role)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'display_name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        // Generate system name from display_name
+        $validated['name'] = $this->generateSystemName($validated['display_name']);
+
+        // Check if name is unique (excluding current role)
+        $request->validate([
+            'name' => 'unique:roles,name,' . $role->id,
         ]);
 
         $role->update($validated);
@@ -100,5 +120,15 @@ class RoleController extends BaseController
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'Rol eliminado exitosamente.');
+    }
+
+    /**
+     * Generate system name from display name
+     */
+    private function generateSystemName(string $displayName): string
+    {
+        return strtolower(
+            preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $displayName))
+        );
     }
 }

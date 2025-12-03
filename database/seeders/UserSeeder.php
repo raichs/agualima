@@ -14,18 +14,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Super Admin user first
-        $superAdmin = User::firstOrCreate(
-            ['email' => 'admin@agualima.com'],
+        // Create Administrator user first
+        $administrator = User::firstOrCreate(
+            ['email' => 'fernando.cabrera@agualima.com'],
             [
-                'name' => 'Admin Sistema',
-                'first_name' => 'Admin',
-                'last_name' => 'Sistema',
-                'dni' => '12345678',
-                'password' => Hash::make('12345678'),
+                'name' => 'Fernando Cabrera',
+                'first_name' => 'Fernando',
+                'last_name' => 'Cabrera',
+                'dni' => '71883521',
+                'password' => Hash::make('71883521'),
             ]
         );
-        $superAdmin->assignRole(RoleEnum::SUPER_ADMIN->value);
+        $administrator->assignRole(RoleEnum::ADMINISTRATOR->value);
 
         // Create other users
         $users = [
@@ -33,42 +33,35 @@ class UserSeeder extends Seeder
                 'first_name' => 'Xiomara',
                 'last_name' => 'Torres',
                 'email' => 'xiomara.torres@agualima.com',
-                'dni' => '87654321',
+                'dni' => '12345678',
                 'role' => RoleEnum::MANAGEMENT->value,
             ],
             [
-                'first_name' => 'Fernando',
-                'last_name' => 'Cabrera',
-                'email' => 'fernando.cabrera@agualima.com',
-                'dni' => '76543210',
-                'role' => RoleEnum::ADMINISTRATOR->value,
-            ],
-            [
-                'first_name' => 'Clever',
-                'last_name' => 'Oruna',
+                'first_name' => 'Clever Ronaldo',
+                'last_name' => 'Salvador Oruna',
                 'email' => 'clever.oruna@agualima.com',
-                'dni' => '65432109',
+                'dni' => '47259536',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'first_name' => 'Pedro',
-                'last_name' => 'Gómez',
+                'first_name' => 'Pedro Luis',
+                'last_name' => 'Gomez Mejia',
                 'email' => 'pedro.gomez@agualima.com',
-                'dni' => '54321098',
+                'dni' => '45679160',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'first_name' => 'Liliana',
-                'last_name' => 'Guzmán',
+                'first_name' => 'Edith Liliana',
+                'last_name' => 'Guzman Alvarado',
                 'email' => 'liliana.guzman@agualima.com',
-                'dni' => '43210987',
+                'dni' => '46169846',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [
-                'first_name' => 'Susan',
-                'last_name' => 'Yovera',
+                'first_name' => 'Susan Dallan',
+                'last_name' => 'Yovera Yllatopa',
                 'email' => 'susan.yovera@agualima.com',
-                'dni' => '32109876',
+                'dni' => '70031164',
                 'role' => RoleEnum::CROP_MANAGER->value,
             ],
             [

@@ -21,7 +21,7 @@ const ProfileDropdown = () => {
                     <img src="https://placehold.co/150x150" width={32} className="rounded-circle me-lg-2 d-flex" alt="user-image" />
                     <span className="d-lg-flex flex-column gap-1 d-none">
                         <h5 className="my-0">{auth.user?.name}</h5>
-                        <h6 className="my-0 fw-normal">{auth.user?.email}</h6>
+                        <h6 className="my-0 fw-normal text-center">{auth.user?.role_name}</h6>
                     </span>
                     <IconifyIcon icon="tabler:chevron-down" className="d-none d-lg-block align-middle ms-2" />
                 </DropdownToggle>

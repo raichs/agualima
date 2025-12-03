@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('harvest_matrix_daily_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('harvest_matrix_row_lot_id')->constrained('harvest_matrix_row_lots')->onDelete('cascade');
+            $table->foreignId('harvest_matrix_row_lot_id')->constrained('harvest_matrix_row_lots')->restrictOnDelete();
             $table->unsignedTinyInteger('day_of_week'); // 1=lunes, 2=martes, ..., 6=sábado
             $table->date('date');
             $table->decimal('frequency', 5, 2)->default(0);
             $table->decimal('kg_per_day', 10, 2)->default(0);
             $table->unsignedInteger('shifts')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

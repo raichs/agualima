@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class, // Creates super admin and other users
+            CountrySeeder::class,
+            NurserySeeder::class,
             ProjectSeeder::class,
             VarietySeeder::class,
             ShiftSeeder::class,

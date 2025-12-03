@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\VarietyCollection;
 use App\Http\Resources\VarietyResource;
+use App\Models\Nursery;
 use App\Models\Variety;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ class VarietyController extends BaseController
     {
         return Inertia::render('admin/varieties/index', [
             'filters' => $request->only('search'),
+            'total' => Variety::count(),
             'varieties' => new VarietyCollection(
                 Variety::orderBy('id')
                     ->filter($request->only('search'))
@@ -32,7 +34,9 @@ class VarietyController extends BaseController
      */
     public function create(): Response
     {
-        return Inertia::render('admin/varieties/create');
+        return Inertia::render('admin/varieties/create', [
+            'nurseries' => Nursery::orderBy('name')->get(['id', 'name']),
+        ]);
     }
 
     /**
@@ -42,6 +46,7 @@ class VarietyController extends BaseController
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:varieties,name',
+            'nursery_id' => 'required|exists:nurseries,id',
         ]);
 
         Variety::create($validated);
@@ -66,7 +71,8 @@ class VarietyController extends BaseController
     public function edit(Variety $variety): Response
     {
         return Inertia::render('admin/varieties/edit', [
-            'variety' => new VarietyResource($variety),
+            'variety' => new VarietyResource($variety->load('nursery')),
+            'nurseries' => Nursery::orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -77,6 +83,7 @@ class VarietyController extends BaseController
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:varieties,name,' . $variety->id,
+            'nursery_id' => 'required|exists:nurseries,id',
         ]);
 
         $variety->update($validated);
@@ -90,6 +97,12 @@ class VarietyController extends BaseController
      */
     public function destroy(Variety $variety)
     {
+        // Verificar si tiene distribuciones asociadas
+        if ($variety->distributions()->count() > 0) {
+            return redirect()->route('admin.varieties.index')
+                ->with('error', 'No se puede eliminar la variedad porque tiene distribuciones asociadas.');
+        }
+
         $variety->delete();
 
         return redirect()->route('admin.varieties.index')

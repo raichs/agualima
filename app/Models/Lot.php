@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Inertia\Testing\Concerns\Has;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Lot extends Model implements Auditable

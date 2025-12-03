@@ -26,6 +26,12 @@ class DistributionCollection extends ResourceCollection
                 'lot_id' => $distribution->lot_id,
                 'lot_code' => $distribution->lot->code ?? '',
                 'lot_name' => $distribution->lot->name ?? '',
+                'total_area' => $distribution->total_area,
+                'campaign_number' => $distribution->campaign_number,
+                'density' => $distribution->density,
+                'planting_date' => $distribution->planting_date ? \Carbon\Carbon::parse($distribution->planting_date)->format('d/m/Y') : null,
+                'pruning_date' => $distribution->pruning_date ? \Carbon\Carbon::parse($distribution->pruning_date)->format('d/m/Y') : null,
+                'is_active' => $distribution->is_active,
             ];
         })->toArray();
     }

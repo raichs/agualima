@@ -15,19 +15,10 @@ class RoleResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // Traducir el nombre del rol si es un enum válido
-        $label = $this->name;
-        try {
-            $roleEnum = RoleEnum::from($this->name);
-            $label = $roleEnum->label();
-        } catch (\ValueError $e) {
-            $label = $this->name;
-        }
-
         return [
             'id' => $this->id,
-            'name' => $this->name,      // Valor en inglés (super_admin)
-            'label' => $label,          // Valor traducido (Super Administrador)
+            'display_name' => $this->display_name,
+            'description' => $this->description,
             'guard_name' => $this->guard_name,
         ];
     }

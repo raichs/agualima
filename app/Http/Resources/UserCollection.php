@@ -23,9 +23,10 @@ class UserCollection extends ResourceCollection
                 'name' => $user->name,
                 'dni' => $user->dni,
                 'email' => $user->email,
-                'roles' => $user->roles->pluck('name'),
+                'is_active' => $user->is_active,
+                'roles' => $user->roles->pluck('display_name'),
                 'role_id' => $user->roles->first()?->id,
-                'role_name' => RoleEnum::from($user->roles->first()?->name)->label(),
+                'role_name' => $user->roles->first()?->display_name,
             ];
         })->toArray();
     }

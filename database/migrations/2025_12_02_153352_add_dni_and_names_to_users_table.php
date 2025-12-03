@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('dni')->unique()->nullable()->after('name');
             $table->string('first_name')->nullable()->after('dni');
             $table->string('last_name')->nullable()->after('first_name');
+            $table->boolean('is_active')->default(true);
         });
     }
 

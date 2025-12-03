@@ -154,3 +154,63 @@ export const showInfo = (title: string, text?: string) => {
     buttonsStyling: false
   });
 };
+
+export const confirmResetPassword = async (
+  route: string,
+  options: DeleteConfirmOptions = {}
+): Promise<boolean> => {
+  const {
+    title = '¿Restablecer contraseña?',
+    text = 'La contraseña se restablecerá al DNI del usuario',
+    confirmButtonText = 'Sí, restablecer',
+    cancelButtonText = 'Cancelar',
+    successTitle = 'Contraseña restablecida',
+    successText = 'La contraseña ha sido restablecida al DNI del usuario',
+    errorTitle = 'Error',
+    errorText = 'Hubo un problema al restablecer la contraseña'
+  } = options;
+
+  try {
+    const result = await ReactSwal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText,
+      cancelButtonText,
+      customClass: {
+        confirmButton: 'btn btn-warning mt-2',
+        cancelButton: 'btn btn-secondary mt-2 me-2'
+      },
+      buttonsStyling: false,
+      showCloseButton: true,
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      router.post(route, {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+        },
+        onError: () => {
+          ReactSwal.fire({
+            title: errorTitle,
+            text: errorText,
+            icon: 'error',
+            customClass: {
+              confirmButton: 'btn btn-primary mt-2'
+            },
+            buttonsStyling: false
+          });
+        }
+      });
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error en confirmResetPassword:', error);
+    return false;
+  }
+};

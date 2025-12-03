@@ -8,8 +8,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
 
 const ShiftsPage = () => {
-    const { shifts } = usePage<{
+    const { shifts, total } = usePage<{
         shifts: PaginatedData<Shift>;
+        total: number;
     }>().props;
 
     const { data, meta } = shifts;
@@ -22,7 +23,9 @@ const ShiftsPage = () => {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex align-items-center justify-content-between border-bottom border-light">
-                            <h4 className="header-title">Lista de Turnos</h4>
+                            <div className="d-flex align-items-start gap-2 flex-column">
+                                <h4 className="header-title mb-0">Lista de Turnos <span className="badge bg-primary ms-1 p-1">{total}</span></h4>
+                            </div>
                             <div>
                                 <Link href={route('admin.shifts.create')} className="btn btn-primary">
                                     <IconifyIcon icon="tabler:plus" className="me-1" /> Nuevo Turno

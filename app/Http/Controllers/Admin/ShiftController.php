@@ -18,6 +18,7 @@ class ShiftController extends BaseController
     {
         return Inertia::render('admin/shifts/index', [
             'filters' => $request->only('search'),
+            'total' => Shift::count(),
             'shifts' => new ShiftCollection(
                 Shift::orderBy('id')
                     ->filter($request->only('search'))
@@ -90,6 +91,12 @@ class ShiftController extends BaseController
      */
     public function destroy(Shift $shift)
     {
+        // Verificar si tiene distribuciones asociadas
+        if ($shift->distributions()->count() > 0) {
+            return redirect()->route('admin.shifts.index')
+                ->with('error', 'No se puede eliminar el turno porque tiene distribuciones asociadas.');
+        }
+
         $shift->delete();
 
         return redirect()->route('admin.shifts.index')

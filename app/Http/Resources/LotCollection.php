@@ -20,6 +20,7 @@ class LotCollection extends ResourceCollection
                 'code' => $lot->code,
                 'name' => $lot->name ?? null,
                 'description' => $lot->description ?? null,
+                'is_active' => $lot->is_active,
             ];
         })->toArray();
     }

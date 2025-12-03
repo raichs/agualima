@@ -26,13 +26,13 @@ const ShowRolePage = ({ role }: ShowRolePageProps) => {
                     <Col lg={6}>
                         <div className="mb-3">
                             <label className="form-label fw-bold">Nombre del Rol</label>
-                            <p className="form-control-plaintext">{role.label || role.name}</p>
+                            <p className="form-control-plaintext">{role.display_name}</p>
                         </div>
                     </Col>
                     <Col lg={6}>
                         <div className="mb-3">
-                            <label className="form-label fw-bold">Identificador (Key)</label>
-                            <p className="form-control-plaintext"><code>{role.name}</code></p>
+                            <label className="form-label fw-bold">Descripción</label>
+                            <p className="form-control-plaintext">{role.description}</p>
                         </div>
                     </Col>
                 </Row>

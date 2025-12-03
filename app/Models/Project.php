@@ -15,7 +15,20 @@ class Project extends Model implements Auditable
     protected $fillable = [
         'name',
         'description',
+        'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function distributions()
+    {
+        return $this->hasMany(Distribution::class);
+    }
 
     public function scopeFilter(Builder $query, array $filters)
     {

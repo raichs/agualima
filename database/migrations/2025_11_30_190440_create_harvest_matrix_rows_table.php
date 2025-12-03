@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('harvest_matrix_rows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('harvest_matrix_id')->constrained('harvest_matrices')->onDelete('cascade');
-            $table->foreignId('variety_id')->constrained('varieties')->onDelete('cascade');
-            $table->foreignId('shift_id')->constrained('shifts')->onDelete('cascade');
+            $table->foreignId('harvest_matrix_id')->constrained('harvest_matrices')->restrictOnDelete();
+            $table->foreignId('variety_id')->constrained('varieties')->restrictOnDelete();
+            $table->foreignId('shift_id')->constrained('shifts')->restrictOnDelete();
             $table->decimal('total_kilos', 10, 2)->default(0);
             $table->decimal('kg_per_shift_avg', 10, 2)->default(0);
             $table->unsignedInteger('total_shifts')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

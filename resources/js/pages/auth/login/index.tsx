@@ -9,7 +9,7 @@ import { Button, Card, Col, FormCheck, FormControl, FormGroup, FormLabel, Row } 
 import { currentYear, developedBy, developedByWebSite } from '@/context/constants';
 
 type LoginForm = {
-    dni: string;
+    dni: number;
     password: string;
     remember: boolean;
 };
@@ -21,8 +21,8 @@ interface LoginProps {
 
 const LoginPage = ({ canResetPassword }: LoginProps) => {
     const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
-        dni: '12345678',
-        password: '12345678',
+        dni: '71883521',
+        password: '71883521',
         remember: true,
     });
 
@@ -55,6 +55,7 @@ const LoginPage = ({ canResetPassword }: LoginProps) => {
                                         placeholder="Ingrese su DNI"
                                         value={data.dni}
                                         onChange={(e) => setData('dni', e.target.value)}
+                                        maxLength={8}
                                     />
                                     {errors.dni && <p className="text-danger">{errors.dni}</p>}
                                 </FormGroup>

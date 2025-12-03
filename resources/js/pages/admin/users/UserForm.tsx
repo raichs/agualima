@@ -4,34 +4,22 @@ import PageTitle from '@/components/PageTitle';
 import { Role, User } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { Button, Col, FormLabel, FormSelect, Row } from 'react-bootstrap';
+import { Button, Col, FormLabel, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useState, useEffect } from 'react';
+import Select from 'react-select';
 
-const userSchema = yup.object({
-    first_name: yup.string().required('El nombre es requerido'),
-    last_name: yup.string().required('Los apellidos son requeridos'),
-    dni: yup.string().required('El DNI es requerido').matches(/^[0-9]{8}$/, 'El DNI debe contener exactamente 8 números'),
-    email: yup.string().email('Email inválido').required('El email es requerido'),
-    password: yup.string().test('password', 'La contraseña debe tener al menos 8 caracteres', function(value) {
-        if (value && value.length > 0) {
-            return value.length >= 8;
-        }
-        return true;
-    }).optional().default(''),
-    password_confirmation: yup.string().test('password_confirmation', 'Las contraseñas no coinciden', function(value) {
-        const { password } = this.parent;
-        if (password && password.length > 0) {
-            return value === password;
-        }
-        return true;
-    }).optional().default(''),
-    role_id: yup.number().required('El rol es requerido'),
-});
-
-type UserFormData = yup.InferType<typeof userSchema>;
+type UserFormData = {
+    first_name: string;
+    last_name: string;
+    dni: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    role_id: number;
+};
 
 interface UserFormProps {
     user?: User;
@@ -41,10 +29,40 @@ interface UserFormProps {
 }
 
 const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
-    const { roles } = usePage<{ roles: Role[] }>().props;
+    const { roles, errors } = usePage<{ roles: Role[]; errors: Record<string, string> }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { handleSubmit, control, watch } = useForm<UserFormData>({
+    const roleOptions = roles.map((role) => ({
+        value: role.id,
+        label: role.display_name,
+    }));
+
+    const userSchema = yup.object({
+        first_name: yup.string().required('El nombre es requerido'),
+        last_name: yup.string().required('Los apellidos son requeridos'),
+        dni: yup.string().required('El DNI es requerido').matches(/^[0-9]{8}$/, 'El DNI debe contener exactamente 8 números'),
+        email: yup.string().email('Email inválido').required('El email es requerido'),
+        password: user
+            ? yup.string().test('password', 'La contraseña debe tener al menos 8 caracteres', function(value) {
+                if (value && value.length > 0) {
+                    return value.length >= 8;
+                }
+                return true;
+            }).optional().default('')
+            : yup.string().required('La contraseña es requerida').min(8, 'La contraseña debe tener al menos 8 caracteres'), // Requerida en creación
+        password_confirmation: user
+            ? yup.string().test('password_confirmation', 'Las contraseñas no coinciden', function(value) {
+                const { password } = this.parent;
+                if (password && password.length > 0) {
+                    return value === password;
+                }
+                return true;
+            }).optional().default('')
+            : yup.string().oneOf([yup.ref('password')], 'Las contraseñas deben coincidir').required('La confirmación de contraseña es requerida'), // Requerida en creación
+        role_id: yup.number().required('El rol es requerido'),
+    });
+
+    const { handleSubmit, control, watch, setError, clearErrors } = useForm<UserFormData>({
         resolver: yupResolver(userSchema),
         defaultValues: {
             first_name: user?.first_name || '',
@@ -58,14 +76,41 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
     });
 
     const dniValue = watch('dni');
+    const [usuario, setUsuario] = useState('');
 
-    // Auto-fill username with DNI when DNI changes
+    // Set server errors to form
     useEffect(() => {
-        if (dniValue && !user) {
-            // In a real app, you might want to generate a username from DNI
-            // For now, we'll just ensure it's not editable in the UI
+        if (errors) {
+            Object.keys(errors).forEach((field) => {
+                setError(field as keyof UserFormData, {
+                    type: 'server',
+                    message: errors[field],
+                });
+            });
         }
-    }, [dniValue, user]);
+    }, [errors, setError]);
+
+    // Clear server errors when user starts typing
+    const handleFieldChange = (fieldName: keyof UserFormData) => {
+        if (errors && errors[fieldName]) {
+            clearErrors(fieldName);
+        }
+    };
+
+    // Auto-fill usuario with DNI when DNI changes
+    useEffect(() => {
+        setUsuario(dniValue || '');
+    }, [dniValue]);
+
+    const selectStyles = {
+        control: (provided: any, state: any) => ({
+            ...provided,
+            borderColor: state.selectProps.error ? '#dc3545' : provided.borderColor,
+            '&:hover': {
+                borderColor: state.selectProps.error ? '#dc3545' : provided.borderColor
+            }
+        })
+    };
 
     const onSubmit = (data: UserFormData) => {
         setIsSubmitting(true);
@@ -98,6 +143,7 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                         label="Nombres"
                                         placeholder="Ingrese los nombres"
                                         containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('first_name')}
                                     />
                                 </Col>
                                 <Col lg={6}>
@@ -107,6 +153,7 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                         label="Apellidos"
                                         placeholder="Ingrese los apellidos"
                                         containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('last_name')}
                                     />
                                 </Col>
                                 <Col lg={6}>
@@ -117,7 +164,21 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                         placeholder="Ingrese el DNI"
                                         containerClassName="mb-3"
                                         maxLength={8}
+                                        onChange={() => handleFieldChange('dni')}
                                     />
+                                </Col>
+                                <Col lg={6}>
+                                    {/* Campo usuario desactivado y autocompletado con el DNI */}
+                                    <div className="mb-3">
+                                        <FormLabel>Usuario</FormLabel>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={usuario}
+                                            disabled
+                                            placeholder="Usuario"
+                                        />
+                                    </div>
                                 </Col>
                                 <Col lg={6}>
                                     <TextFormInput
@@ -127,26 +188,7 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                         type="email"
                                         placeholder="Ingrese el email"
                                         containerClassName="mb-3"
-                                    />
-                                </Col>
-                                <Col lg={6}>
-                                    <TextFormInput
-                                        control={control}
-                                        name="password"
-                                        label={user ? "Contraseña (dejar en blanco para no cambiar)" : "Contraseña"}
-                                        type="password"
-                                        placeholder={user ? "Ingrese la nueva contraseña" : "Ingrese la contraseña"}
-                                        containerClassName="mb-3"
-                                    />
-                                </Col>
-                                <Col lg={6}>
-                                    <TextFormInput
-                                        control={control}
-                                        name="password_confirmation"
-                                        label="Confirmar Contraseña"
-                                        type="password"
-                                        placeholder="Confirme la contraseña"
-                                        containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('email')}
                                     />
                                 </Col>
                                 <Col lg={6}>
@@ -157,19 +199,17 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                             control={control}
                                             render={({ field, fieldState }) => (
                                                 <>
-                                                    <FormSelect
+                                                    <Select
                                                         {...field}
-                                                        isInvalid={!!fieldState.error}
-                                                        value={field.value || ''}
-                                                        onChange={(e) => field.onChange(parseInt(e.target.value))}
-                                                    >
-                                                        <option value="">Seleccione un rol</option>
-                                                        {roles.map((role) => (
-                                                            <option key={role.id} value={role.id}>
-                                                                {role.label || role.name}
-                                                            </option>
-                                                        ))}
-                                                    </FormSelect>
+                                                        value={roleOptions.find((option) => option.value === field.value) || null}
+                                                        onChange={(option) => field.onChange(option?.value || null)}
+                                                        options={roleOptions}
+                                                        placeholder="Seleccione un rol"
+                                                        classNamePrefix="react-select"
+                                                        styles={selectStyles}
+                                                        error={!!fieldState.error}
+                                                        onBlur={() => handleFieldChange('role_id')}
+                                                    />
                                                     {fieldState.error && (
                                                         <div className="invalid-feedback d-block">
                                                             {fieldState.error.message}
@@ -179,6 +219,28 @@ const UserForm = ({ user, title, subTitle, cardTitle }: UserFormProps) => {
                                             )}
                                         />
                                     </div>
+                                </Col>
+                                <Col lg={6}>
+                                    <TextFormInput
+                                        control={control}
+                                        name="password"
+                                        label={user ? "Contraseña (dejar en blanco para no cambiar)" : "Contraseña"}
+                                        type="password"
+                                        placeholder={user ? "Ingrese la nueva contraseña" : "Ingrese la contraseña"}
+                                        containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('password')}
+                                    />
+                                </Col>
+                                <Col lg={6}>
+                                    <TextFormInput
+                                        control={control}
+                                        name="password_confirmation"
+                                        label="Confirmar Contraseña"
+                                        type="password"
+                                        placeholder="Confirme la contraseña"
+                                        containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('password_confirmation')}
+                                    />
                                 </Col>
                             </Row>
 

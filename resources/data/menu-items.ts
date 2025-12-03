@@ -35,6 +35,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         isTitle: true,
     },
     {
+        key: 'nurseries',
+        label: 'Viveros',
+        icon: 'tabler:tree',
+        url: '/admin/nurseries',
+    },
+    {
         key: 'projects',
         label: 'Proyectos',
         icon: 'tabler:folder-cog',

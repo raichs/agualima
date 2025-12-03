@@ -21,6 +21,13 @@ class RoleCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return $this->collection->map(function ($role) {
+            return [
+                'id' => $role->id,
+                'display_name' => $role->display_name,
+                'description' => $role->description,
+                'is_active' => $role->is_active,
+            ];
+        })->toArray();
     }
 }
