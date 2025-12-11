@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
-import { Pagination as BootstrapPagination } from 'react-bootstrap';
+import { Pagination as BootstrapPagination, Row, Col } from 'react-bootstrap';
 
 interface PaginationLink {
   url: string | null;
@@ -10,9 +10,11 @@ interface PaginationLink {
 
 interface PaginationProps {
   links: PaginationLink[];
+  currentItems?: number;
+  totalItems?: number;
 }
 
-export default function Pagination({ links = [] }: PaginationProps) {
+export default function Pagination({ links = [], currentItems = 0, totalItems = 0 }: PaginationProps) {
   if (!links || links.length === 3) return null;
 
   const prevLink = links[0];
@@ -51,81 +53,90 @@ export default function Pagination({ links = [] }: PaginationProps) {
   }
 
   return (
-    <nav aria-label="Navegación de páginas">
-      <BootstrapPagination className="justify-content-center mb-0">
-        <BootstrapPagination.First
-          disabled={!firstPage?.url || firstPage?.active}
-          as={firstPage?.url && !firstPage?.active ? Link : 'span'}
-          href={firstPage?.url || undefined}
-        >
-          <IconifyIcon icon="tabler:chevrons-left" />
-        </BootstrapPagination.First>
-
-        <BootstrapPagination.Prev
-          disabled={!prevLink.url}
-          as={prevLink.url ? Link : 'span'}
-          href={prevLink.url || undefined}
-        >
-          <IconifyIcon icon="tabler:chevron-left" />
-        </BootstrapPagination.Prev>
-
-        {showStartEllipsis && (
-          <>
-            <BootstrapPagination.Item
-              active={firstPage?.active}
-              disabled={!firstPage?.url}
-              as={firstPage?.url ? Link : 'span'}
+    <Row className="align-items-center justify-content-between">
+      <Col sm="auto" className="mb-2 mb-sm-0">
+        <div className="text-muted text-center text-sm-start">
+          Mostrando <span className="fw-semibold">{currentItems}</span> de <span className="fw-semibold">{totalItems}</span> Resultados
+        </div>
+      </Col>
+      <Col sm="auto">
+        <nav aria-label="Navegación de páginas">
+          <BootstrapPagination className="justify-content-center mb-0">
+            <BootstrapPagination.First
+              disabled={!firstPage?.url || firstPage?.active}
+              as={firstPage?.url && !firstPage?.active ? Link : 'span'}
               href={firstPage?.url || undefined}
             >
-              <span dangerouslySetInnerHTML={{ __html: firstPage?.label || '' }} />
-            </BootstrapPagination.Item>
-            <BootstrapPagination.Ellipsis disabled />
-          </>
-        )}
+              <IconifyIcon icon="tabler:chevrons-left" />
+            </BootstrapPagination.First>
 
-        {visiblePages.map((link, index) => (
-          <BootstrapPagination.Item
-            key={index + (showStartEllipsis ? 1 : 0)}
-            active={link.active}
-            disabled={!link.url}
-            as={link.url ? Link : 'span'}
-            href={link.url || undefined}
-          >
-            <span dangerouslySetInnerHTML={{ __html: link.label }} />
-          </BootstrapPagination.Item>
-        ))}
+            <BootstrapPagination.Prev
+              disabled={!prevLink.url}
+              as={prevLink.url ? Link : 'span'}
+              href={prevLink.url || undefined}
+            >
+              <IconifyIcon icon="tabler:chevron-left" />
+            </BootstrapPagination.Prev>
 
-        {/* Última página y puntos suspensivos al final */}
-        {showEndEllipsis && (
-          <>
-            <BootstrapPagination.Ellipsis disabled />
-            <BootstrapPagination.Item
-              active={lastPage?.active}
-              disabled={!lastPage?.url}
-              as={lastPage?.url ? Link : 'span'}
+            {showStartEllipsis && (
+              <>
+                <BootstrapPagination.Item
+                  active={firstPage?.active}
+                  disabled={!firstPage?.url}
+                  as={firstPage?.url ? Link : 'span'}
+                  href={firstPage?.url || undefined}
+                >
+                  <span dangerouslySetInnerHTML={{ __html: firstPage?.label || '' }} />
+                </BootstrapPagination.Item>
+                <BootstrapPagination.Ellipsis disabled />
+              </>
+            )}
+
+            {visiblePages.map((link, index) => (
+              <BootstrapPagination.Item
+                key={index + (showStartEllipsis ? 1 : 0)}
+                active={link.active}
+                disabled={!link.url}
+                as={link.url ? Link : 'span'}
+                href={link.url || undefined}
+              >
+                <span dangerouslySetInnerHTML={{ __html: link.label }} />
+              </BootstrapPagination.Item>
+            ))}
+
+            {/* Última página y puntos suspensivos al final */}
+            {showEndEllipsis && (
+              <>
+                <BootstrapPagination.Ellipsis disabled />
+                <BootstrapPagination.Item
+                  active={lastPage?.active}
+                  disabled={!lastPage?.url}
+                  as={lastPage?.url ? Link : 'span'}
+                  href={lastPage?.url || undefined}
+                >
+                  <span dangerouslySetInnerHTML={{ __html: lastPage?.label || '' }} />
+                </BootstrapPagination.Item>
+              </>
+            )}
+
+            <BootstrapPagination.Next
+              disabled={!nextLink.url}
+              as={nextLink.url ? Link : 'span'}
+              href={nextLink.url || undefined}
+            >
+              <IconifyIcon icon="tabler:chevron-right" />
+            </BootstrapPagination.Next>
+
+            <BootstrapPagination.Last
+              disabled={!lastPage?.url || lastPage?.active}
+              as={lastPage?.url && !lastPage?.active ? Link : 'span'}
               href={lastPage?.url || undefined}
             >
-              <span dangerouslySetInnerHTML={{ __html: lastPage?.label || '' }} />
-            </BootstrapPagination.Item>
-          </>
-        )}
-
-        <BootstrapPagination.Next
-          disabled={!nextLink.url}
-          as={nextLink.url ? Link : 'span'}
-          href={nextLink.url || undefined}
-        >
-          <IconifyIcon icon="tabler:chevron-right" />
-        </BootstrapPagination.Next>
-
-        <BootstrapPagination.Last
-          disabled={!lastPage?.url || lastPage?.active}
-          as={lastPage?.url && !lastPage?.active ? Link : 'span'}
-          href={lastPage?.url || undefined}
-        >
-          <IconifyIcon icon="tabler:chevrons-right" />
-        </BootstrapPagination.Last>
-      </BootstrapPagination>
-    </nav>
+              <IconifyIcon icon="tabler:chevrons-right" />
+            </BootstrapPagination.Last>
+          </BootstrapPagination>
+        </nav>
+      </Col>
+    </Row>
   );
 }

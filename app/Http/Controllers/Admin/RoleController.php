@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\RoleCollection;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,7 +36,11 @@ class RoleController extends BaseController
      */
     public function create(): Response
     {
-        return Inertia::render('admin/roles/create');
+        $menus = $this->getAllMenus();
+
+        return Inertia::render('admin/roles/create', [
+            'allMenus' => $menus,
+        ]);
     }
 
     /**
@@ -46,6 +51,8 @@ class RoleController extends BaseController
         $validated = $request->validate([
             'display_name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'permissions' => 'array',
+            'permissions.*' => 'string',
         ]);
 
         // Generate system name from display_name
@@ -56,7 +63,12 @@ class RoleController extends BaseController
             'name' => 'unique:roles,name',
         ]);
 
-        Role::create($validated);
+        $role = Role::create($validated);
+
+        // Sync permissions
+        if (isset($validated['permissions'])) {
+            $role->syncPermissions($validated['permissions']);
+        }
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'Rol creado exitosamente.');
@@ -77,8 +89,13 @@ class RoleController extends BaseController
      */
     public function edit(Role $role): Response
     {
+        $menus = $this->getAllMenus();
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
+
         return Inertia::render('admin/roles/edit', [
             'role' => new \App\Http\Resources\RoleResource($role),
+            'allMenus' => $menus,
+            'rolePermissions' => $rolePermissions,
         ]);
     }
 
@@ -90,6 +107,8 @@ class RoleController extends BaseController
         $validated = $request->validate([
             'display_name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'permissions' => 'array',
+            'permissions.*' => 'string',
         ]);
 
         // Generate system name from display_name
@@ -101,6 +120,11 @@ class RoleController extends BaseController
         ]);
 
         $role->update($validated);
+
+        // Sync permissions
+        if (isset($validated['permissions'])) {
+            $role->syncPermissions($validated['permissions']);
+        }
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'Rol actualizado exitosamente.');
@@ -130,5 +154,25 @@ class RoleController extends BaseController
         return strtolower(
             preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $displayName))
         );
+    }
+
+    /**
+     * Get all menus for permissions
+     */
+    private function getAllMenus()
+    {
+        return Menu::active()
+            ->whereNotIn('key', ['home', 'dashboard'])
+            ->ordered()
+            ->get()
+            ->map(function ($menu) {
+                $data = $menu->only(['id', 'key', 'label', 'permission', 'parent_id', 'is_title']);
+                if ($menu->children->isNotEmpty()) {
+                    $data['children'] = $menu->children->map(function ($child) {
+                        return $child->only(['id', 'key', 'label', 'permission', 'parent_id']);
+                    });
+                }
+                return $data;
+            });
     }
 }

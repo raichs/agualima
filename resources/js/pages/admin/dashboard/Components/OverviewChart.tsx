@@ -8,22 +8,22 @@ const OverviewChart = () => {
     const OverViewOpts: ApexOptions = {
         series: [
             {
-                name: 'Total Income',
+                name: 'Ingresos Totales',
                 type: 'bar',
                 data: [89.25, 98.58, 68.74, 108.87, 77.54, 84.03, 51.24, 28.57, 92.57, 42.36, 88.51, 36.57],
             },
             {
-                name: 'Total Expenses',
+                name: 'Gastos Totales',
                 type: 'bar',
                 data: [22.25, 24.58, 36.74, 22.87, 19.54, 25.03, 29.24, 10.57, 24.57, 35.36, 20.51, 17.57],
             },
             {
-                name: 'Investments',
+                name: 'Inversiones',
                 type: 'area',
                 data: [34, 65, 46, 68, 49, 61, 42, 44, 78, 52, 63, 67],
             },
             {
-                name: 'Savings',
+                name: 'Ahorros',
                 type: 'line',
                 data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35],
             },
@@ -59,7 +59,7 @@ const OverviewChart = () => {
             },
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
             axisTicks: {
                 show: false,
             },
@@ -171,10 +171,10 @@ const OverviewChart = () => {
                             <IconifyIcon icon="tabler:dots-vertical" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end">
-                            <DropdownItem>Sales Report</DropdownItem>
-                            <DropdownItem>Export Report</DropdownItem>
-                            <DropdownItem>Profit</DropdownItem>
-                            <DropdownItem>Action</DropdownItem>
+                            <DropdownItem>Reporte de Ventas</DropdownItem>
+                            <DropdownItem>Exportar Reporte</DropdownItem>
+                            <DropdownItem>Ganancias</DropdownItem>
+                            <DropdownItem>Acción</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </CardHeader>

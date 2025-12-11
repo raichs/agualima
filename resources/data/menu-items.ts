@@ -4,7 +4,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     {
         key: 'home',
         label: 'Inicio',
-        isTitle: true,
+        is_title: true,
     },
     {
         key: 'dashboard',
@@ -15,7 +15,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     {
         key: 'security',
         label: 'Seguridad y Permisos',
-        isTitle: true,
+        is_title: true,
     },
     {
         key: 'roles',
@@ -32,7 +32,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     {
         key: 'Components',
         label: 'ADMINISTRACIÓN',
-        isTitle: true,
+        is_title: true,
     },
     {
         key: 'nurseries',
@@ -67,7 +67,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     {
         key: 'process',
         label: 'PROCESOS',
-        isTitle: true,
+        is_title: true,
     },
     {
         key: 'distributions',

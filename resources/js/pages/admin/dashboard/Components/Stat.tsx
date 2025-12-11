@@ -2,7 +2,7 @@ import IconifyIcon from '@/components/wrappers/IconifyIcon';
 import { Card, CardBody, Col, Row } from 'react-bootstrap';
 import { statData, StatType } from '../data';
 
-const StatCard = ({ change, count, icon, title, variant }: StatType) => {
+const StatCard = ({ count, icon, title }: StatType) => {
     return (
         <Card>
             <CardBody>

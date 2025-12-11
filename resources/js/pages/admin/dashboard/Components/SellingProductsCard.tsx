@@ -8,13 +8,13 @@ const SellingProductsCard = () => {
     return (
         <Card className="card-h-100">
             <CardHeader className="d-flex flex-wrap align-items-center gap-2 border-bottom border-dashed">
-                <h4 className="header-title me-auto">Top Selling Products</h4>
+                <h4 className="header-title me-auto">Productos Más Vendidos</h4>
                 <div className="d-flex gap-2 justify-content-end text-end">
                     <Button variant="light" size="sm">
-                        Import <IconifyIcon icon="tabler:download" className="ms-1" />
+                        Importar <IconifyIcon icon="tabler:download" className="ms-1" />
                     </Button>
                     <Button variant="primary" size="sm">
-                        Export <IconifyIcon icon="tabler:file-export" className="ms-1" />
+                        Exportar <IconifyIcon icon="tabler:file-export" className="ms-1" />
                     </Button>
                 </div>
             </CardHeader>
@@ -36,22 +36,22 @@ const SellingProductsCard = () => {
                                             </Link>
                                         </h5>
                                         <span className="text-muted fs-12">
-                                            {item.date.toLocaleString('en-us', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                            {item.date.toLocaleString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                                         </span>
                                     </td>
                                     <td>
                                         <h5 className="fs-14 my-1">${item.price}</h5>
-                                        <span className="text-muted fs-12">Price</span>
+                                        <span className="text-muted fs-12">Precio</span>
                                     </td>
                                     <td>
                                         <h5 className="fs-14 my-1">{item.quantity}</h5>
-                                        <span className="text-muted fs-12">Quantity</span>
+                                        <span className="text-muted fs-12">Cantidad</span>
                                     </td>
                                     <td>
                                         <div className="d-flex align-items-center justify-content-end">
                                             <div className="me-2">
                                                 <h5 className="fs-14 my-1">${item.amount}</h5>
-                                                <span className="text-muted fs-12">Amount</span>
+                                                <span className="text-muted fs-12">Monto</span>
                                             </div>
                                         </div>
                                     </td>
@@ -65,7 +65,7 @@ const SellingProductsCard = () => {
                 <div className="align-items-center justify-content-between row text-center text-sm-start">
                     <div className="col-sm">
                         <div className="text-muted">
-                            Showing <span className="fw-semibold">5</span> of <span className="fw-semibold">10</span> Results
+                            Mostrando <span className="fw-semibold">5</span> de <span className="fw-semibold">10</span> Resultados
                         </div>
                     </div>
                     <Col sm={'auto'} className="mt-3 mt-sm-0">

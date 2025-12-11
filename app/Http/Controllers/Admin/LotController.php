@@ -45,6 +45,7 @@ class LotController extends BaseController
             'code' => 'required|string|max:255|unique:lots,code',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'lines' => 'nullable|integer|min:1',
         ]);
 
         Lot::create($validated);
@@ -82,6 +83,7 @@ class LotController extends BaseController
             'code' => 'required|string|max:255|unique:lots,code,' . $lot->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
+            'lines' => 'nullable|integer|min:1',
         ]);
 
         $lot->update($validated);

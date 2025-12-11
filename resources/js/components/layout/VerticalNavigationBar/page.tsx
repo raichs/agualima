@@ -2,7 +2,7 @@ import FallbackLoading from '@/components/FallbackLoading';
 import LogoBox from '@/components/LogoBox';
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
 import SimpleBar from 'simplebar-react';
-import { getMenuItems } from '@/helpers/menu';
+import { useMenuItems } from '@/helpers/menu';
 
 import { useLayoutContext } from '@/context/useLayoutContext';
 import coffeeImg from '@/images/coffee-cup.svg';
@@ -14,7 +14,8 @@ const AppMenu = lazy(() => import('./components/AppMenu'));
 
 const VerticalNavigationBar = () => {
     const { toggleBackdrop } = useLayoutContext();
-    const menuItems = getMenuItems();
+    const menuItems = useMenuItems();
+
     return (
         <div className="sidenav-menu" id="leftside-menu-container">
             <LogoBox />

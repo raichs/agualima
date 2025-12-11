@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Variety;
 use App\Models\Shift;
 use App\Models\Lot;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,7 +25,7 @@ class DistributionController extends BaseController
             'filters' => $request->only('search'),
             'total' => Distribution::count(),
             'distributions' => new DistributionCollection(
-                Distribution::with(['project', 'variety', 'shift', 'lot'])
+                Distribution::with(['campaign', 'project', 'variety', 'shift', 'lot'])
                     ->orderBy('id')
                     ->filter($request->only('search'))
                     ->paginate()
@@ -39,6 +40,7 @@ class DistributionController extends BaseController
     public function create(): Response
     {
         return Inertia::render('admin/distributions/create', [
+            'campaigns' => Campaign::orderBy('name')->get(['id', 'name']),
             'projects' => Project::orderBy('name')->get(['id', 'name']),
             'varieties' => Variety::orderBy('name')->get(['id', 'name']),
             'shifts' => Shift::orderBy('name')->get(['id', 'name']),
@@ -52,6 +54,7 @@ class DistributionController extends BaseController
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'campaign_id' => 'required|exists:campaigns,id',
             'project_id' => 'required|exists:projects,id',
             'variety_id' => 'required|exists:varieties,id',
             'shift_id' => 'required|exists:shifts,id',
@@ -65,6 +68,7 @@ class DistributionController extends BaseController
 
         // Verificar si ya existe esta combinación
         $exists = Distribution::where([
+            ['campaign_id', $validated['campaign_id']],
             ['project_id', $validated['project_id']],
             ['variety_id', $validated['variety_id']],
             ['shift_id', $validated['shift_id']],
@@ -88,7 +92,7 @@ class DistributionController extends BaseController
      */
     public function show(Distribution $distribution): Response
     {
-        $distribution->load(['project', 'variety', 'shift', 'lot']);
+        $distribution->load(['campaign', 'project', 'variety', 'shift', 'lot']);
 
         return Inertia::render('admin/distributions/show', [
             'distribution' => new DistributionResource($distribution),
@@ -100,10 +104,11 @@ class DistributionController extends BaseController
      */
     public function edit(Distribution $distribution): Response
     {
-        $distribution->load(['project', 'variety', 'shift', 'lot']);
+        $distribution->load(['campaign', 'project', 'variety', 'shift', 'lot']);
 
         return Inertia::render('admin/distributions/edit', [
             'distribution' => new DistributionResource($distribution),
+            'campaigns' => Campaign::orderBy('name')->get(['id', 'name']),
             'projects' => Project::orderBy('name')->get(['id', 'name']),
             'varieties' => Variety::orderBy('name')->get(['id', 'name']),
             'shifts' => Shift::orderBy('name')->get(['id', 'name']),
@@ -117,6 +122,7 @@ class DistributionController extends BaseController
     public function update(Request $request, Distribution $distribution)
     {
         $validated = $request->validate([
+            'campaign_id' => 'required|exists:campaigns,id',
             'project_id' => 'required|exists:projects,id',
             'variety_id' => 'required|exists:varieties,id',
             'shift_id' => 'required|exists:shifts,id',
@@ -130,6 +136,7 @@ class DistributionController extends BaseController
 
         // Verificar si ya existe esta combinación (excepto el registro actual)
         $exists = Distribution::where([
+            ['campaign_id', $validated['campaign_id']],
             ['project_id', $validated['project_id']],
             ['variety_id', $validated['variety_id']],
             ['shift_id', $validated['shift_id']],

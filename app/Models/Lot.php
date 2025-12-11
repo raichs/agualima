@@ -15,6 +15,7 @@ class Lot extends Model implements Auditable
         'code',
         'name',
         'description',
+        'lines',
     ];
 
     public function distributions()

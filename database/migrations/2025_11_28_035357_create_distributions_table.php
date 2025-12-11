@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('distributions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('campaign_id')->constrained()->restrictOnDelete();
             $table->foreignId('project_id')->constrained()->restrictOnDelete();
             $table->foreignId('variety_id')->constrained()->restrictOnDelete();
             $table->foreignId('shift_id')->constrained()->restrictOnDelete();
@@ -27,7 +28,7 @@ return new class extends Migration
             $table->softDeletes();
 
             // Unique constraint para evitar duplicados
-            $table->unique(['project_id', 'variety_id', 'shift_id', 'lot_id'], 'unique_distribution');
+            $table->unique(['campaign_id', 'project_id', 'variety_id', 'shift_id', 'lot_id'], 'unique_distribution');
         });
     }
 

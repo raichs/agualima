@@ -8,16 +8,14 @@ import { Button, Col, FormLabel, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 
-const nurserySchema = yup.object({
-    name: yup.string().required('El nombre del vivero es requerido'),
-    description: yup.string().nullable(),
-    country_id: yup.number().required('El país es requerido'),
-});
-
-type NurseryFormData = yup.InferType<typeof nurserySchema>;
+type NurseryFormData = {
+    name: string;
+    description: string;
+    country_id: number;
+};
 
 interface NurseryFormProps {
     nursery?: Nursery;
@@ -27,12 +25,18 @@ interface NurseryFormProps {
 }
 
 const NurseryForm = ({ nursery, title, subTitle, cardTitle }: NurseryFormProps) => {
-    const { countries } = usePage<{ countries: Country[] }>().props;
+    const { countries, errors } = usePage<{ countries: Country[]; errors: Record<string, string> }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     const countryOptions = countries.map(c => ({ value: c.id, label: c.name }));
-    
-    const { handleSubmit, control } = useForm<NurseryFormData>({
+
+    const nurserySchema = yup.object({
+        name: yup.string().required('El nombre del vivero es requerido'),
+        description: yup.string().default(''),
+        country_id: yup.number().required('El país es requerido'),
+    });
+
+    const { handleSubmit, control, setError, clearErrors } = useForm<NurseryFormData>({
         resolver: yupResolver(nurserySchema),
         defaultValues: {
             name: nursery?.name || '',
@@ -40,6 +44,35 @@ const NurseryForm = ({ nursery, title, subTitle, cardTitle }: NurseryFormProps) 
             country_id: nursery?.country_id || undefined,
         },
     });
+
+    // Set server errors to form
+    useEffect(() => {
+        if (errors) {
+            Object.keys(errors).forEach((field) => {
+                setError(field as keyof NurseryFormData, {
+                    type: 'server',
+                    message: errors[field],
+                });
+            });
+        }
+    }, [errors, setError]);
+
+    // Clear server errors when user starts typing
+    const handleFieldChange = (fieldName: keyof NurseryFormData) => {
+        if (errors && errors[fieldName]) {
+            clearErrors(fieldName);
+        }
+    };
+
+    const selectStyles = {
+        control: (provided: any, state: any) => ({
+            ...provided,
+            borderColor: state.selectProps.error ? '#dc3545' : provided.borderColor,
+            '&:hover': {
+                borderColor: state.selectProps.error ? '#dc3545' : provided.borderColor
+            }
+        })
+    };
 
     const onSubmit = (data: NurseryFormData) => {
         setIsSubmitting(true);
@@ -69,6 +102,7 @@ const NurseryForm = ({ nursery, title, subTitle, cardTitle }: NurseryFormProps) 
                                         label="Nombre del Vivero"
                                         placeholder="Ingrese el nombre del vivero"
                                         containerClassName="mb-3"
+                                        onChange={() => handleFieldChange('name')}
                                     />
                                 </Col>
                                 <Col lg={6}>
@@ -80,12 +114,15 @@ const NurseryForm = ({ nursery, title, subTitle, cardTitle }: NurseryFormProps) 
                                             render={({ field, fieldState }) => (
                                                 <>
                                                     <Select
-                                                        className="select2"
-                                                        options={countryOptions}
-                                                        isMulti={false}
+                                                        {...field}
                                                         value={countryOptions.find(o => o.value === field.value) || null}
-                                                        onChange={(option) => field.onChange(option?.value)}
+                                                        onChange={(option) => field.onChange(option?.value || null)}
+                                                        options={countryOptions}
                                                         placeholder="Seleccione un país"
+                                                        classNamePrefix="react-select"
+                                                        styles={selectStyles}
+                                                        error={!!fieldState.error}
+                                                        onBlur={() => handleFieldChange('country_id')}
                                                     />
                                                     {fieldState.error && (
                                                         <div className="invalid-feedback d-block">

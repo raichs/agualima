@@ -5,9 +5,8 @@ import IconifyIcon from '@/components/wrappers/IconifyIcon';
 import MainLayout from '@/layouts/MainLayout';
 import { PaginatedData, User } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
-import { Card, CardFooter, CardHeader, Col, Row } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
-import { confirmResetPassword } from '@/utils/sweetalert';
+import { Card, CardFooter, CardHeader, Col, Row, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { confirmResetPassword, confirmToggleActive } from '@/utils/sweetalert';
 
 const UsersPage = () => {
     const { users, total } = usePage<{
@@ -46,15 +45,28 @@ const UsersPage = () => {
                             editRoute="admin.users.edit"
                             deleteRoute="admin.users.destroy"
                             customActions={(user) => (
-                                <Button
-                                    variant="soft-warning"
-                                    size="sm"
-                                    className="btn-icon rounded-circle me-2"
-                                    onClick={() => confirmResetPassword(route('admin.users.reset-password', user.id))}
-                                    title="Restablecer contraseña"
-                                >
-                                    <IconifyIcon icon="tabler:key" />
-                                </Button>
+                                <>
+                                    <OverlayTrigger overlay={<Tooltip>Restablecer contraseña</Tooltip>}>
+                                        <Button
+                                            variant="soft-warning"
+                                            size="sm"
+                                            className="btn-icon rounded-circle"
+                                            onClick={() => confirmResetPassword(route('admin.users.reset-password', user.id))}
+                                        >
+                                            <IconifyIcon icon="tabler:key" />
+                                        </Button>
+                                    </OverlayTrigger>
+                                    <OverlayTrigger overlay={<Tooltip>{user.is_active ? "Inactivar usuario" : "Activar usuario"}</Tooltip>}>
+                                        <Button
+                                            variant={user.is_active ? "soft-danger" : "soft-success"}
+                                            size="sm"
+                                            className="btn-icon rounded-circle"
+                                            onClick={() => confirmToggleActive(route('admin.users.toggle-active', user.id), user.is_active)}
+                                        >
+                                            <IconifyIcon icon={user.is_active ? "tabler:user-x" : "tabler:user-check"} />
+                                        </Button>
+                                    </OverlayTrigger>
+                                </>
                             )}
                             deleteOptions={{
                                 title: '¿Eliminar usuario?',
@@ -67,7 +79,7 @@ const UsersPage = () => {
                             emptyMessage="No hay usuarios registrados"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

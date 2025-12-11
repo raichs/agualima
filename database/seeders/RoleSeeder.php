@@ -64,6 +64,8 @@ class RoleSeeder extends Seeder
         ]);
 
         $role->syncPermissions([
+            // Dashboard access
+            PermissionEnum::VIEW_DASHBOARD->value,
             // View all
             PermissionEnum::VIEW_USERS->value,
             PermissionEnum::VIEW_PROJECTS->value,
@@ -71,9 +73,6 @@ class RoleSeeder extends Seeder
             PermissionEnum::VIEW_SHIFTS->value,
             PermissionEnum::VIEW_LOTS->value,
             PermissionEnum::VIEW_DISTRIBUTIONS->value,
-            // Reports
-            PermissionEnum::VIEW_REPORTS->value,
-            PermissionEnum::EXPORT_REPORTS->value,
         ]);
     }
 
@@ -91,6 +90,8 @@ class RoleSeeder extends Seeder
         ]);
 
         $role->syncPermissions([
+            // Dashboard access
+            PermissionEnum::VIEW_DASHBOARD->value,
             // View projects, varieties, shifts (read-only)
             PermissionEnum::VIEW_PROJECTS->value,
             PermissionEnum::VIEW_VARIETIES->value,
@@ -103,8 +104,8 @@ class RoleSeeder extends Seeder
             PermissionEnum::VIEW_DISTRIBUTIONS->value,
             PermissionEnum::CREATE_DISTRIBUTIONS->value,
             PermissionEnum::EDIT_DISTRIBUTIONS->value,
-            // View reports
-            PermissionEnum::VIEW_REPORTS->value,
+            // Full access to harvest matrices
+            PermissionEnum::VIEW_HARVEST_MATRICES->value,
         ]);
     }
 
@@ -122,13 +123,14 @@ class RoleSeeder extends Seeder
         ]);
 
         $role->syncPermissions([
+            // Dashboard access
+            PermissionEnum::VIEW_DASHBOARD->value,
             // Only view permissions
             PermissionEnum::VIEW_PROJECTS->value,
             PermissionEnum::VIEW_VARIETIES->value,
             PermissionEnum::VIEW_SHIFTS->value,
             PermissionEnum::VIEW_LOTS->value,
             PermissionEnum::VIEW_DISTRIBUTIONS->value,
-            PermissionEnum::VIEW_REPORTS->value,
         ]);
     }
 }

@@ -22,15 +22,15 @@ const Error403Page = () => {
                                 <img src={logo} alt="logo light" height={24} className="logo-light" />
                             </Link>
                             <div className="mx-auto text-center">
-                                <h3 className="fw-semibold mb-2">Oooh ! </h3>
+                                <h3 className="fw-semibold mb-2">¡Oooh!</h3>
                                 <img src={error403Img} alt="error 403 img" height={250} />
-                                <h2 className="fw-bold mt-3 text-primary lh-base">Access Denied !</h2>
-                                <h4 className="fw-bold mt-2 text-dark lh-base">You Don&apos;t Have Permission To Access On This Server</h4>
+                                <h2 className="fw-bold mt-3 text-primary lh-base">Acceso Denegado</h2>
+                                <h4 className="fw-bold mt-2 text-dark lh-base">No Tienes Permiso Para Acceder A Este Servidor</h4>
                                 <p className="text-muted fs-12 mb-3">
-                                    You are not authorized to view this page. If you think this is a mistake, please contact support for assistance.
+                                    No estás autorizado para ver esta página. Si crees que es un error, por favor contacta al soporte para asistencia.
                                 </p>
                                 <Link href="/" className="btn btn-primary">
-                                    Back To Home <IconifyIcon icon="tabler:home" className="ms-1" />
+                                    Volver Al Inicio <IconifyIcon icon="tabler:home" className="ms-1" />
                                 </Link>
                             </div>
                             <p className="mt-3 mb-0">

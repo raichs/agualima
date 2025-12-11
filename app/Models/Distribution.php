@@ -12,6 +12,7 @@ class Distribution extends Model implements Auditable
     use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
+        'campaign_id',
         'project_id',
         'variety_id',
         'shift_id',
@@ -27,6 +28,11 @@ class Distribution extends Model implements Auditable
         'planting_date' => 'date',
         'pruning_date' => 'date',
     ];
+
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 
     public function project()
     {

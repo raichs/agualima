@@ -47,7 +47,7 @@ export type SalesOrderType = {
     price: number;
     totalPrice: number;
     quantity: number;
-    orderStatus: 'Sold' | 'Return';
+    orderStatus: 'Vendido' | 'Devuelto';
 };
 
 export const statData: StatType[] = [
@@ -75,24 +75,24 @@ export const statData: StatType[] = [
 
 export const overViewChartData: OverViewChartType[] = [
     {
-        title: 'Revenue',
+        title: 'Ingresos',
         count: 29.5,
         icon: 'tabler:square-rounded-arrow-down',
         variant: 'success',
     },
     {
-        title: 'Expenses',
+        title: 'Gastos',
         count: 15.07,
         icon: 'tabler:square-rounded-arrow-up',
         variant: 'danger',
     },
     {
-        title: 'Investment',
+        title: 'Inversión',
         count: 3.6,
         icon: 'tabler:chart-infographic',
     },
     {
-        title: 'Savings',
+        title: 'Ahorros',
         count: 6.9,
         icon: 'tabler:pig',
     },
@@ -100,51 +100,51 @@ export const overViewChartData: OverViewChartType[] = [
 
 export const activityData: ActivityType[] = [
     {
-        title: 'You sold an item',
+        title: 'Vendiste un artículo',
         icon: 'tabler:basket',
-        description: 'Paul Burgess just purchased “My - Admin Dashboard”!',
+        description: 'Paul Burgess acaba de comprar "Mi - Panel de Administración"!',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'info',
     },
     {
-        title: 'Product on the Theme Market',
+        title: 'Producto en el Mercado de Temas',
         icon: 'tabler:rocket',
-        description: 'Reviewer added Admin Dashboard',
+        description: 'Revisor agregó Panel de Administración',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'primary',
     },
     {
         title: 'Robert Delaney',
         icon: 'tabler:message',
-        description: 'Send you message "Are you there?"',
+        description: 'Te envió un mensaje "¿Estás ahí?"',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'info',
     },
     {
         title: 'Audrey Tobey',
         icon: 'tabler:photo',
-        description: 'Uploaded a photo "Error.jpg"',
+        description: 'Subió una foto "Error.jpg"',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'primary',
     },
     {
-        title: 'You sold an item',
+        title: 'Vendiste un artículo',
         icon: 'tabler:basket',
-        description: 'Paul Burgess just purchased “My - Admin Dashboard”!',
+        description: 'Paul Burgess acaba de comprar "Mi - Panel de Administración"!',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'info',
     },
     {
-        title: 'Product on the Theme Market',
+        title: 'Producto en el Mercado de Temas',
         icon: 'tabler:rocket',
-        description: 'Reviewer added Admin Dashboard',
+        description: 'Revisor agregó Panel de Administración',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'primary',
     },
     {
         title: 'Robert Delaney',
         icon: 'tabler:message',
-        description: 'Send you message "Are you there?"',
+        description: 'Te envió un mensaje "¿Estás ahí?"',
         time: addOrSubtractMinutesFromDate(15),
         variant: 'info',
     },
@@ -153,7 +153,7 @@ export const activityData: ActivityType[] = [
 export const salesProductData: SalesProductType[] = [
     {
         id: '1',
-        name: '	ASOS High Waist Tshirt',
+        name: '	Camiseta ASOS Cintura Alta',
         image: product1,
         date: addOrSubtractDaysFromDate(50),
         price: 79.49,
@@ -162,7 +162,7 @@ export const salesProductData: SalesProductType[] = [
     },
     {
         id: '2',
-        name: '	Marco Single Sofa',
+        name: '	Sofá Individual Marco',
         image: product7,
         date: addOrSubtractDaysFromDate(150),
         price: 128.5,
@@ -171,7 +171,7 @@ export const salesProductData: SalesProductType[] = [
     },
     {
         id: '3',
-        name: 'Smart Headphone',
+        name: 'Audífonos Inteligentes',
         image: product4,
         date: addOrSubtractDaysFromDate(180),
         price: 39.99,
@@ -180,7 +180,7 @@ export const salesProductData: SalesProductType[] = [
     },
     {
         id: '4',
-        name: 'Lightweight Jacket',
+        name: 'Chaqueta Ligera',
         image: product5,
         date: addOrSubtractDaysFromDate(250),
         price: 20.0,
@@ -189,7 +189,7 @@ export const salesProductData: SalesProductType[] = [
     },
     {
         id: '5',
-        name: 'Marco Shoes',
+        name: 'Zapatos Marco',
         image: product6,
         date: addOrSubtractDaysFromDate(350),
         price: 28.49,
@@ -202,46 +202,46 @@ export const salesOrderData: SalesOrderType[] = [
     {
         id: '201',
         image: product6,
-        title: 'Marco Shoes',
+        title: 'Zapatos Marco',
         price: 29.99,
         totalPrice: 29.99,
         quantity: 1,
-        orderStatus: 'Sold',
+        orderStatus: 'Vendido',
     },
     {
         id: '202',
         image: product1,
-        title: 'High Waist Tshirt',
+        title: 'Camiseta Cintura Alta',
         price: 9.99,
         totalPrice: 29.97,
         quantity: 3,
-        orderStatus: 'Sold',
+        orderStatus: 'Vendido',
     },
     {
         id: '203',
         image: product3,
-        title: 'Comfirt Chair',
+        title: 'Silla Cómoda',
         price: 49.99,
         totalPrice: 49.99,
         quantity: 1,
-        orderStatus: 'Return',
+        orderStatus: 'Devuelto',
     },
     {
         id: '204',
         image: product4,
-        title: 'Smart Headphone',
+        title: 'Audífonos Inteligentes',
         price: 39.99,
         totalPrice: 39.99,
         quantity: 1,
-        orderStatus: 'Sold',
+        orderStatus: 'Vendido',
     },
     {
         id: '205',
         image: product2,
-        title: 'Laptop Bag',
+        title: 'Bolso para Laptop',
         price: 12.99,
         totalPrice: 51.99,
         quantity: 4,
-        orderStatus: 'Sold',
+        orderStatus: 'Vendido',
     },
 ];

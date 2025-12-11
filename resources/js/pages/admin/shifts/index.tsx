@@ -51,7 +51,7 @@ const ShiftsPage = () => {
                             emptyMessage="No hay turnos registrados"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

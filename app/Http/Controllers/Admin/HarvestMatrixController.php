@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\MatrixStatusEnum;
+use App\Enums\RoleEnum;
 use App\Http\Resources\HarvestMatrixCollection;
 use App\Http\Resources\HarvestMatrixResource;
 use App\Models\HarvestMatrix;
+use App\Models\Lot;
+use App\Models\Shift;
+use App\Models\User;
+use App\Models\Variety;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,16 +23,21 @@ class HarvestMatrixController extends BaseController
      */
     public function index(Request $request): Response
     {
+        $currentUser = Auth::user();
+        $query = HarvestMatrix::with(['user'])
+            ->filter($request->only('search'))
+            ->orderBy('year', 'desc')
+            ->orderBy('week_number', 'desc');
+
+        if ($currentUser->hasRole(RoleEnum::CROP_MANAGER->value)) {
+            $query->where('user_id', $currentUser->id);
+        }
+
         return Inertia::render('admin/harvest-matrices/index', [
             'filters' => $request->only('search'),
-            'total' => HarvestMatrix::count(),
+            'total' => $query->count(),
             'matrices' => new HarvestMatrixCollection(
-                HarvestMatrix::with(['user'])
-                    ->filter($request->only('search'))
-                    ->orderBy('year', 'desc')
-                    ->orderBy('week_number', 'desc')
-                    ->paginate(10)
-                    ->appends($request->all())
+                $query->paginate(10)->appends($request->all())
             ),
         ]);
     }
@@ -37,8 +47,13 @@ class HarvestMatrixController extends BaseController
      */
     public function create(): Response
     {
-        // Obtener usuarios con rol de responsable de cultivo
-        $users = \App\Models\User::role('responsable_de_cultivo')->get(['id', 'name']);
+        $currentUser = Auth::user();
+
+        if ($currentUser->hasRole(RoleEnum::CROP_MANAGER->value)) {
+            $users = collect([$currentUser]);
+        } else {
+            $users = User::role(RoleEnum::CROP_MANAGER->value)->get(['id', 'name']);
+        }
 
         return Inertia::render('admin/harvest-matrices/create', [
             'users' => $users,
@@ -77,8 +92,14 @@ class HarvestMatrixController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(HarvestMatrix $harvestMatrix): Response
+    public function show(HarvestMatrix $harvestMatrix)
     {
+        $currentUser = Auth::user();
+
+        if (!$this->canAccessMatrix($harvestMatrix, $currentUser)) {
+            return redirect()->route('admin.harvest-matrices.index')->with('error', 'No tienes permisos para ver esta matriz.');
+        }
+
         $harvestMatrix->load(['user', 'rows.variety', 'rows.shift', 'rows.lots.lot', 'rows.lots.dailyData']);
 
         return Inertia::render('admin/harvest-matrices/show', [
@@ -89,8 +110,14 @@ class HarvestMatrixController extends BaseController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(HarvestMatrix $harvestMatrix): Response
+    public function edit(HarvestMatrix $harvestMatrix)
     {
+        $currentUser = Auth::user();
+
+        if (!$this->canAccessMatrix($harvestMatrix, $currentUser)) {
+            return redirect()->route('admin.harvest-matrices.index')->with('error', 'No tienes permisos para editar esta matriz.');
+        }
+
         $harvestMatrix->load(['user', 'rows.variety', 'rows.shift', 'rows.lots.lot', 'rows.lots.dailyData']);
 
         // Generar fechas para la semana
@@ -98,9 +125,9 @@ class HarvestMatrixController extends BaseController
         $harvestMatrix->dates = $dates;
 
         // Obtener todas las variedades, turnos y lotes disponibles
-        $varieties = \App\Models\Variety::orderBy('name')->get();
-        $shifts = \App\Models\Shift::orderBy('name')->get();
-        $lots = \App\Models\Lot::orderBy('code')->get();
+        $varieties = Variety::orderBy('name')->get();
+        $shifts = Shift::orderBy('name')->get();
+        $lots = Lot::orderBy('code')->get();
 
         return Inertia::render('admin/harvest-matrices/edit', [
             'matrix' => new HarvestMatrixResource($harvestMatrix),
@@ -115,6 +142,12 @@ class HarvestMatrixController extends BaseController
      */
     public function update(Request $request, HarvestMatrix $harvestMatrix)
     {
+        $currentUser = Auth::user();
+
+        if (!$this->canAccessMatrix($harvestMatrix, $currentUser)) {
+            return redirect()->route('admin.harvest-matrices.index')->with('error', 'No tienes permisos para editar esta matriz.');
+        }
+
         $validated = $request->validate([
             'rows' => 'required|array',
             'rows.*.id' => 'nullable|exists:harvest_matrix_rows,id',
@@ -204,10 +237,27 @@ class HarvestMatrixController extends BaseController
      */
     public function destroy(HarvestMatrix $harvestMatrix)
     {
+        $currentUser = Auth::user();
+
+        if (!$this->canAccessMatrix($harvestMatrix, $currentUser)) {
+            return redirect()->route('admin.harvest-matrices.index')->with('error', 'No tienes permisos para eliminar esta matriz.');
+        }
+
         $harvestMatrix->delete();
 
         return redirect()->route('admin.harvest-matrices.index')
             ->with('success', 'Matriz de cosecha eliminada exitosamente.');
+    }
+
+    /**
+     * Check if user can access the matrix
+     */
+    private function canAccessMatrix(HarvestMatrix $matrix, $user): bool
+    {
+        if ($user->hasRole(RoleEnum::CROP_MANAGER->value)) {
+            return $matrix->user_id === $user->id;
+        }
+        return true;
     }
 
     /**

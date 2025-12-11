@@ -59,7 +59,7 @@ const HarvestMatricesPage = () => {
                             emptyMessage="No hay matrices de cosecha registradas"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

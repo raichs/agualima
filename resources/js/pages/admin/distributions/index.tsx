@@ -34,6 +34,7 @@ const DistributionsPage = () => {
                         </CardHeader>
                         <Table
                             columns={[
+                                { label: 'Campaña', name: 'campaign_name' },
                                 { label: 'Proyecto', name: 'project_name' },
                                 { label: 'Variedad', name: 'variety_name' },
                                 { label: 'Turno', name: 'shift_name' },
@@ -41,8 +42,6 @@ const DistributionsPage = () => {
                                 { label: 'Área', name: 'total_area' },
                                 { label: 'Nº Campaña', name: 'campaign_number' },
                                 { label: 'Densidad', name: 'density' },
-                                { label: 'Fecha de siembra', name: 'planting_date' },
-                                { label: 'Fecha de poda', name: 'pruning_date' },
                             ]}
                             rows={data}
                             showRoute="admin.distributions.show"
@@ -59,7 +58,7 @@ const DistributionsPage = () => {
                             emptyMessage="No hay distribuciones registradas"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

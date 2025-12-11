@@ -1,7 +1,14 @@
 import { HORIZONTAL_MENU_ITEM, MENU_ITEMS } from '@/data/menu-items';
 import { MenuItemType } from '@/types/menu';
+import { usePage } from '@inertiajs/react';
+
+export const useMenuItems = (): MenuItemType[] => {
+    const { menus } = usePage().props as any;
+    return menus || MENU_ITEMS; // fallback a MENU_ITEMS si no hay menus dinámicos
+};
 
 export const getMenuItems = (): MenuItemType[] => {
+    // Deprecated, use useMenuItems hook instead
     return MENU_ITEMS;
 };
 export const getHorizontalMenuItems = (): MenuItemType[] => {
@@ -10,10 +17,10 @@ export const getHorizontalMenuItems = (): MenuItemType[] => {
 
 export const findAllParent = (menuItems: MenuItemType[], menuItem: MenuItemType): string[] => {
     let parents: string[] = [];
-    const parent = findMenuItem(menuItems, menuItem.parentKey);
+    const parent = findMenuItem(menuItems, menuItem.parent_key);
     if (parent) {
         parents.push(parent.key);
-        if (parent.parentKey) {
+        if (parent.parent_key) {
             parents = [...parents, ...findAllParent(menuItems, parent)];
         }
     }
@@ -30,7 +37,7 @@ export const getMenuItemFromURL = (items: MenuItemType | MenuItemType[], url: st
         }
     } else {
         // Skip items without URL or title items
-        if (!items.url || items.isTitle) {
+        if (!items.url || items.is_title) {
             if (items.children != null) {
                 for (const item of items.children) {
                     const childMatch = getMenuItemFromURL(item, url);

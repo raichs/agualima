@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Button } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import get from 'lodash/get';
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
 import { confirmDelete } from '@/utils/sweetalert';
@@ -100,36 +100,42 @@ export default function Table<T extends { id: number | string }>({
                   <td className="pe-3">
                     <div className="hstack gap-1 justify-content-end">
                       {showRoute && (
-                        <Link href={route(showRoute, row.id)}>
-                          <Button
-                            variant="soft-primary"
-                            size="sm"
-                            className="btn-icon rounded-circle"
-                          >
-                            <IconifyIcon icon="tabler:eye" />
-                          </Button>
-                        </Link>
+                        <OverlayTrigger overlay={<Tooltip>Ver</Tooltip>}>
+                          <Link href={route(showRoute, row.id)}>
+                            <Button
+                              variant="soft-primary"
+                              size="sm"
+                              className="btn-icon rounded-circle"
+                            >
+                              <IconifyIcon icon="tabler:eye" />
+                            </Button>
+                          </Link>
+                        </OverlayTrigger>
                       )}
                       {editRoute && (
-                        <Link href={route(editRoute, row.id)}>
-                          <Button
-                            variant="soft-success"
-                            size="sm"
-                            className="btn-icon rounded-circle"
-                          >
-                            <IconifyIcon icon="tabler:edit" className="fs-16" />
-                          </Button>
-                        </Link>
+                        <OverlayTrigger overlay={<Tooltip>Editar</Tooltip>}>
+                          <Link href={route(editRoute, row.id)}>
+                            <Button
+                              variant="soft-success"
+                              size="sm"
+                              className="btn-icon rounded-circle"
+                            >
+                              <IconifyIcon icon="tabler:edit" className="fs-16" />
+                            </Button>
+                          </Link>
+                        </OverlayTrigger>
                       )}
                       {deleteRoute && (
-                        <Button
-                          variant="soft-danger"
-                          size="sm"
-                          className="btn-icon rounded-circle"
-                          onClick={() => handleDelete(row.id)}
-                        >
-                          <IconifyIcon icon="tabler:trash" />
-                        </Button>
+                        <OverlayTrigger overlay={<Tooltip>Eliminar</Tooltip>}>
+                          <Button
+                            variant="soft-danger"
+                            size="sm"
+                            className="btn-icon rounded-circle"
+                            onClick={() => handleDelete(row.id)}
+                          >
+                            <IconifyIcon icon="tabler:trash" />
+                          </Button>
+                        </OverlayTrigger>
                       )}
                       {customActions && customActions(row)}
                     </div>

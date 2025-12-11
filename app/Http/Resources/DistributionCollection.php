@@ -17,6 +17,8 @@ class DistributionCollection extends ResourceCollection
         return $this->collection->map(function ($distribution) {
             return [
                 'id' => $distribution->id,
+                'campaign_id' => $distribution->campaign_id,
+                'campaign_name' => $distribution->campaign->name ?? '',
                 'project_id' => $distribution->project_id,
                 'project_name' => $distribution->project->name ?? '',
                 'variety_id' => $distribution->variety_id,

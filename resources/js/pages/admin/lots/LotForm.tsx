@@ -15,6 +15,7 @@ const lotSchema = yup.object({
     code: yup.string().required('El código del lote es requerido'),
     name: yup.string().required('El nombre del lote es requerido'),
     description: yup.string().default(''),
+    lines: yup.number().nullable().transform((value, originalValue) => originalValue === '' ? null : value).min(1, 'Debe tener al menos 1 línea'),
 });
 
 type LotFormData = yup.InferType<typeof lotSchema>;
@@ -28,12 +29,13 @@ interface LotFormProps {
 
 const LotForm = ({ lot, title, subTitle, cardTitle }: LotFormProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { handleSubmit, control } = useForm<LotFormData>({
+    const { handleSubmit, control } = useForm<any>({
         resolver: yupResolver(lotSchema),
         defaultValues: {
             code: lot?.code || '',
             name: lot?.name || '',
             description: lot?.description || '',
+            lines: lot?.lines,
         },
     });
 
@@ -73,6 +75,16 @@ const LotForm = ({ lot, title, subTitle, cardTitle }: LotFormProps) => {
                                         name="name"
                                         label="Nombre del Lote"
                                         placeholder="Ingrese el nombre"
+                                        containerClassName="mb-3"
+                                    />
+                                </Col>
+                                <Col lg={6}>
+                                    <TextFormInput
+                                        control={control}
+                                        name="lines"
+                                        label="Número de Líneas"
+                                        placeholder="Ingrese el número de líneas"
+                                        type="number"
                                         containerClassName="mb-3"
                                     />
                                 </Col>

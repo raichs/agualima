@@ -8,7 +8,7 @@ import { Button, Col, FormLabel, Row } from 'react-bootstrap';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 const matrixSchema = yup.object({
@@ -26,8 +26,9 @@ const matrixSchema = yup.object({
 type MatrixFormData = yup.InferType<typeof matrixSchema>;
 
 const CreateHarvestMatrixPage = () => {
-    const { users } = usePage<{
+    const { users, errors } = usePage<{
         users: Array<{ id: number; name: string }>;
+        errors: Record<string, string>;
     }>().props;
     
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,16 +53,29 @@ const CreateHarvestMatrixPage = () => {
         }
     };
 
-    const yearOptions = [2024, 2025, 2026];
+    const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from({ length: currentYear - 2024 + 2 }, (_, i) => 2024 + i);
 
-    const { handleSubmit, control } = useForm<MatrixFormData>({
+    const { handleSubmit, control, setError } = useForm<MatrixFormData>({
         resolver: yupResolver(matrixSchema),
         defaultValues: {
             week_number: getWeekNumber(new Date()),
             year: new Date().getFullYear(),
-            user_id: '',
+            user_id: users.length === 1 ? users[0].id.toString() : '',
         },
     });
+
+    // Set server errors to form
+    useEffect(() => {
+        if (errors) {
+            Object.keys(errors).forEach((field) => {
+                setError(field as keyof MatrixFormData, {
+                    type: 'server',
+                    message: errors[field],
+                });
+            });
+        }
+    }, [errors, setError]);
 
     const watchedYear = useWatch({ control, name: 'year' });
     const maxWeeks = getMaxWeeksInYear(watchedYear || currentYear);

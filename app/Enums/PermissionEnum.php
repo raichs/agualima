@@ -4,6 +4,9 @@ namespace App\Enums;
 
 enum PermissionEnum: string
 {
+    // Dashboard
+    case VIEW_DASHBOARD = 'view_dashboard';
+
     // User Management
     case VIEW_USERS = 'view_users';
     case CREATE_USERS = 'create_users';
@@ -39,6 +42,9 @@ enum PermissionEnum: string
     case CREATE_DISTRIBUTIONS = 'create_distributions';
     case EDIT_DISTRIBUTIONS = 'edit_distributions';
     case DELETE_DISTRIBUTIONS = 'delete_distributions';
+
+    // Harvest Matrix Management
+    case VIEW_HARVEST_MATRICES = 'view_harvest_matrices';
 
     // Reports
     case VIEW_REPORTS = 'view_reports';

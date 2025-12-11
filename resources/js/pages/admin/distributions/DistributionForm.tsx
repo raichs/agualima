@@ -1,7 +1,7 @@
 import ComponentContainerCard from '@/components/ComponentContainerCard';
 import TextFormInput from '@/components/form/TextFormInput';
 import PageTitle from '@/components/PageTitle';
-import { Distribution, Project, Variety, Shift, Lot } from '@/types';
+import { Distribution, Project, Variety, Shift, Lot, Campaign } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Button, Col, FormLabel, Row } from 'react-bootstrap';
@@ -12,6 +12,7 @@ import { useState } from 'react';
 import Select from 'react-select';
 
 const distributionSchema = yup.object({
+    campaign_id: yup.number().required('La campaña es requerida'),
     project_id: yup.number().required('El proyecto es requerido'),
     variety_id: yup.number().required('La variedad es requerida'),
     shift_id: yup.number().required('El turno es requerido'),
@@ -33,7 +34,8 @@ interface DistributionFormProps {
 }
 
 const DistributionForm = ({ distribution, title, subTitle, cardTitle }: DistributionFormProps) => {
-    const { projects, varieties, shifts, lots } = usePage<{
+    const { campaigns, projects, varieties, shifts, lots } = usePage<{
+        campaigns: Campaign[];
         projects: Project[];
         varieties: Variety[];
         shifts: Shift[];
@@ -41,14 +43,16 @@ const DistributionForm = ({ distribution, title, subTitle, cardTitle }: Distribu
     }>().props;
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const campaignOptions = campaigns.map(c => ({ value: c.id, label: c.name }));
     const projectOptions = projects.map(p => ({ value: p.id, label: p.name }));
     const varietyOptions = varieties.map(v => ({ value: v.id, label: v.name }));
     const shiftOptions = shifts.map(s => ({ value: s.id, label: s.name }));
     const lotOptions = lots.map(l => ({ value: l.id, label: l.code }));
 
-    const { handleSubmit, control } = useForm<DistributionFormData>({
+    const { handleSubmit, control } = useForm<any>({
         resolver: yupResolver(distributionSchema),
         defaultValues: {
+            campaign_id: distribution?.campaign_id || undefined,
             project_id: distribution?.project_id || undefined,
             variety_id: distribution?.variety_id || undefined,
             shift_id: distribution?.shift_id || undefined,
@@ -82,6 +86,32 @@ const DistributionForm = ({ distribution, title, subTitle, cardTitle }: Distribu
                     <Col xs={12}>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Row>
+                                <Col lg={6}>
+                                    <div className="mb-3">
+                                        <FormLabel>Campaña</FormLabel>
+                                        <Controller
+                                            name="campaign_id"
+                                            control={control}
+                                            render={({ field, fieldState }) => (
+                                                <>
+                                                    <Select
+                                                        className="select2"
+                                                        options={campaignOptions}
+                                                        isMulti={false}
+                                                        value={campaignOptions.find(o => o.value === field.value) || null}
+                                                        onChange={(option) => field.onChange(option?.value)}
+                                                        placeholder="Seleccione una campaña"
+                                                    />
+                                                    {fieldState.error && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {fieldState.error.message}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                        />
+                                    </div>
+                                </Col>
                                 <Col lg={6}>
                                     <div className="mb-3">
                                         <FormLabel>Proyecto</FormLabel>

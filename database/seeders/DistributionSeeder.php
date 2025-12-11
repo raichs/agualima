@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Variety;
 use App\Models\Shift;
 use App\Models\Lot;
+use App\Models\Campaign;
 use Illuminate\Database\Seeder;
 
 class DistributionSeeder extends Seeder
@@ -20,6 +21,14 @@ class DistributionSeeder extends Seeder
 
         if (!file_exists($csvFile)) {
             $this->command->error("CSV file not found: {$csvFile}");
+            return;
+        }
+
+        // Get the first campaign from 2025
+        $campaign = Campaign::whereYear('start_date', 2025)->orderBy('start_date')->first();
+
+        if (!$campaign) {
+            $this->command->error("No campaign found for 2025. Please run CampaignSeeder first.");
             return;
         }
 
@@ -55,6 +64,7 @@ class DistributionSeeder extends Seeder
             if ($project && $variety && $shift && $lot) {
                 Distribution::updateOrCreate(
                     [
+                        'campaign_id' => $campaign->id,
                         'project_id' => $project->id,
                         'variety_id' => $variety->id,
                         'shift_id' => $shift->id,

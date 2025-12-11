@@ -113,7 +113,7 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
     };
 
     return (
-        <Link href={item.url ?? ''} target={item.target} className={clsx(className, { disabled: item.isDisabled })} onClick={handleClick}>
+        <Link href={item.url ?? ''} target={item.target} className={clsx(className, { disabled: item.is_disabled })} onClick={handleClick}>
             {item.icon && (
                 <span className="menu-icon">
                     <IconifyIcon icon={item.icon} />
@@ -122,7 +122,7 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
             {!item.icon && <IconifyIcon icon="tabler:circle-filled" />}
             <span className="menu-text">{item.label}</span>
             {item.badge && <span className={`badge rounded-pill text-end bg-${item.badge.variant}`}>{item.badge.text}</span>}
-            {item.badgeIcon && (
+            {item.badge_icon && (
                 <OverlayTrigger
                     placement="top"
                     overlay={
@@ -133,7 +133,7 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
                 >
                     <span className="badge p-0 menu-alert fs-16 text-danger">
                         <IconifyIcon
-                            icon={item.badgeIcon}
+                            icon={item.badge_icon}
                             data-bs-html="true"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
@@ -223,7 +223,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
             {(menuItems || []).map((item, idx) => {
                 return (
                     <Fragment key={item.key + idx}>
-                        {item.isTitle ? (
+                        {item.is_title ? (
                             <li className={clsx('side-nav-title', { 'mt-2': idx != 0 })}>{item.label}</li>
                         ) : (
                             <>

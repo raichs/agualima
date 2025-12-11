@@ -9,7 +9,7 @@ const DashboardPageTitle = () => {
 
     return (
         <>
-            <Head title="Sales" />
+            <Head title="Ventas" />
             <Row>
                 <Col xs={12}>
                     <div className="page-title-head d-flex align-items-sm-center flex-sm-row flex-column">

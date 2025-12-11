@@ -106,8 +106,8 @@ class User extends Authenticatable implements Auditable
     /**
      * Check if user is super admin
      */
-    public function isSuperAdmin(): bool
+    public function isAdmin(): bool
     {
-        return $this->hasRole(\App\Enums\RoleEnum::SUPER_ADMIN->value);
+        return $this->hasRole(\App\Enums\RoleEnum::ADMINISTRATOR->value);
     }
 }

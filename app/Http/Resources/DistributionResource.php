@@ -16,6 +16,8 @@ class DistributionResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'campaign_id' => $this->campaign_id,
+            'campaign_name' => $this->campaign->name ?? '',
             'project_id' => $this->project_id,
             'project_name' => $this->project->name ?? '',
             'variety_id' => $this->variety_id,

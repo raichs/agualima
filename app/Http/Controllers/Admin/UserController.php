@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\RoleEnum;
 use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
@@ -126,7 +127,7 @@ class UserController extends BaseController
 
     public function destroy(User $user)
     {
-        if ($user->hasRole('administrador')) {
+        if ($user->hasRole(RoleEnum::ADMINISTRATOR->value)) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'No se puede eliminar un usuario con rol de administrador.');
         }
@@ -150,5 +151,25 @@ class UserController extends BaseController
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Contraseña restablecida exitosamente.');
+    }
+
+    /**
+     * Toggle user active status.
+     */
+    public function toggleActive(User $user)
+    {
+        if ($user->hasRole(RoleEnum::ADMINISTRATOR->value)) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'No se puede cambiar el estado de un usuario con rol de administrador.');
+        }
+
+        $user->update([
+            'is_active' => !$user->is_active,
+        ]);
+
+        $status = $user->is_active ? 'activado' : 'inactivado';
+
+        return redirect()->route('admin.users.index')
+            ->with('success', "Usuario {$status} exitosamente.");
     }
 }

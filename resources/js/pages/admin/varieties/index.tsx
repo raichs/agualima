@@ -52,7 +52,7 @@ const VarietiesPage = () => {
                             emptyMessage="No hay variedades registradas"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

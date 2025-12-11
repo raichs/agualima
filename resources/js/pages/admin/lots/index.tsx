@@ -12,6 +12,7 @@ const LotsPage = () => {
         lots: PaginatedData<Lot>;
         total: number;
     }>().props;
+    console.log(lots, total);
 
     const { data, meta } = lots;
     const links = meta?.links || [];
@@ -36,6 +37,7 @@ const LotsPage = () => {
                             columns={[
                                 { label: 'Código', name: 'code' },
                                 { label: 'Nombre', name: 'name' },
+                                { label: 'Líneas', name: 'lines' },
                                 { label: 'Descripción', name: 'description' },
                             ]}
                             rows={data}
@@ -53,7 +55,7 @@ const LotsPage = () => {
                             emptyMessage="No hay lotes registrados"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

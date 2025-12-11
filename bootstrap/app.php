@@ -30,11 +30,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'ShareMenus' => \App\Http\Middleware\ShareMenus::class,
         ]);
 
         // Trust proxies for SSL termination (Kamal/Traefik)
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Throwable $e, $request) {
+            if ($e instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+                return redirect()->route('admin.dashboard')->with('error', 'No tienes permisos para acceder a esta página.');
+            }
+        });
     })->create();

@@ -116,6 +116,26 @@ export interface Lot {
   code: string;
   name: string;
   description?: string;
+  lines?: number | null;
+  is_active?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Campaign {
+  id: number;
+  name: string;
+  start_date: string;
+  end_date?: string | null;
+  actual_end_date?: string | null;
+  pruning_period_start?: string | null;
+  pruning_period_end?: string | null;
+  status: number;
+  target_total_kg?: number | null;
+  actual_total_kg?: number | null;
+  climate_notes?: string | null;
+  agronomic_notes?: string | null;
+  closing_notes?: string | null;
   is_active?: boolean;
   created_at?: string;
   updated_at?: string;
@@ -123,6 +143,8 @@ export interface Lot {
 
 export interface Distribution {
   id: number;
+  campaign_id: number;
+  campaign_name: string;
   project_id: number;
   project_name: string;
   variety_id: number;

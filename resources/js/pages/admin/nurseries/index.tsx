@@ -53,7 +53,7 @@ const NurseriesPage = () => {
                             emptyMessage="No hay viveros registrados"
                         />
                         <CardFooter>
-                            <Pagination links={links} />
+                            <Pagination links={links} currentItems={data.length} totalItems={total} />
                         </CardFooter>
                     </Card>
                 </Col>

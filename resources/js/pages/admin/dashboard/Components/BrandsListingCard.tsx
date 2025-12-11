@@ -9,15 +9,15 @@ const BrandsListingCard = () => {
     return (
         <Card>
             <CardHeader className="d-flex justify-content-between align-items-center">
-                <h4 className="header-title">Brands Listing</h4>
+                <h4 className="header-title">Lista de Marcas</h4>
                 <Button variant="light" size="sm">
-                    Add Brand <IconifyIcon icon="tabler:plus" className="ms-1" />
+                    Agregar Marca <IconifyIcon icon="tabler:plus" className="ms-1" />
                 </Button>
             </CardHeader>
             <CardBody className="p-0">
                 <div className="bg-light bg-opacity-50 py-1 text-center">
                     <p className="m-0">
-                        <b>69</b> Active brands out of <span className="fw-medium">102</span>
+                        <b>69</b> Marcas activas de <span className="fw-medium">102</span>
                     </p>
                 </div>
                 <div className="table-responsive">
@@ -39,21 +39,21 @@ const BrandsListingCard = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <span className="text-muted fs-12">Established</span>
-                                        <h5 className="fs-14 mt-1 fw-normal">Since {item.since}</h5>
+                                        <span className="text-muted fs-12">Establecido</span>
+                                        <h5 className="fs-14 mt-1 fw-normal">Desde {item.since}</h5>
                                     </td>
                                     <td>
-                                        <span className="text-muted fs-12">Stores</span> <br />
+                                        <span className="text-muted fs-12">Tiendas</span> <br />
                                         <h5 className="fs-14 mt-1 fw-normal">{item.Stores}</h5>
                                     </td>
                                     <td>
-                                        <span className="text-muted fs-12">Products</span>
+                                        <span className="text-muted fs-12">Productos</span>
                                         <h5 className="fs-14 mt-1 fw-normal">{item.products}</h5>
                                     </td>
                                     <td>
-                                        <span className="text-muted fs-12">Status</span>
+                                        <span className="text-muted fs-12">Estado</span>
                                         <h5 className="fs-14 mt-1 fw-normal">
-                                            <IconifyIcon icon="tabler:circle-filled" className="fs-12 text-success" /> Active
+                                            <IconifyIcon icon="tabler:circle-filled" className="fs-12 text-success" /> Activo
                                         </h5>
                                     </td>
                                     <td style={{ width: 30 }}>
@@ -67,8 +67,8 @@ const BrandsListingCard = () => {
                                                 <IconifyIcon icon="tabler:dots-vertical" />
                                             </DropdownToggle>
                                             <DropdownMenu className="dropdown-menu-end">
-                                                <DropdownItem>Refresh Report</DropdownItem>
-                                                <DropdownItem>Export Report</DropdownItem>
+                                                <DropdownItem>Actualizar Reporte</DropdownItem>
+                                                <DropdownItem>Exportar Reporte</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </td>
@@ -82,7 +82,7 @@ const BrandsListingCard = () => {
                 <div className="align-items-center justify-content-between row text-center text-sm-start">
                     <div className="col-sm">
                         <div className="text-muted">
-                            Showing <span className="fw-semibold">5</span> of <span className="fw-semibold">15</span> Results
+                            Mostrando <span className="fw-semibold">5</span> de <span className="fw-semibold">15</span> Resultados
                         </div>
                     </div>
                     <Col sm={'auto'} className="mt-3 mt-sm-0">

@@ -21,7 +21,7 @@ const DashboardPage = () => {
                     <Row>
                         <OverviewChart />
                         <TrafficSourceChart />
-                   import MainLayout from '@/layouts/MainLayout'; </Row>
+                    </Row>
                     <Row>
                         <Col xxl={6}>
                             <BrandsListingCard />

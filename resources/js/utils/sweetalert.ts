@@ -214,3 +214,65 @@ export const confirmResetPassword = async (
     return false;
   }
 };
+
+export const confirmToggleActive = async (
+  route: string,
+  isActive: boolean | undefined,
+  options: DeleteConfirmOptions = {}
+): Promise<boolean> => {
+  const action = (isActive ?? false) ? 'inactivar' : 'activar';
+  const {
+    title = `¿${action.charAt(0).toUpperCase() + action.slice(1)} usuario?`,
+    text = `El usuario será ${action}do`,
+    confirmButtonText = `Sí, ${action}`,
+    cancelButtonText = 'Cancelar',
+    successTitle = `Usuario ${action}do`,
+    successText = `El usuario ha sido ${action}do exitosamente`,
+    errorTitle = 'Error',
+    errorText = `Hubo un problema al ${action} el usuario`
+  } = options;
+
+  try {
+    const result = await ReactSwal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText,
+      cancelButtonText,
+      customClass: {
+        confirmButton: (isActive ?? false) ? 'btn btn-danger mt-2' : 'btn btn-success mt-2',
+        cancelButton: 'btn btn-secondary mt-2 me-2'
+      },
+      buttonsStyling: false,
+      showCloseButton: true,
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      router.post(route, {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+        },
+        onError: () => {
+          ReactSwal.fire({
+            title: errorTitle,
+            text: errorText,
+            icon: 'error',
+            customClass: {
+              confirmButton: 'btn btn-primary mt-2'
+            },
+            buttonsStyling: false
+          });
+        }
+      });
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error en confirmToggleActive:', error);
+    return false;
+  }
+};

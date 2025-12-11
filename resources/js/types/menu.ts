@@ -3,17 +3,17 @@ import { HTMLAttributeAnchorTarget } from 'react';
 export type MenuItemType = {
     key: string;
     label: string;
-    isTitle?: boolean;
+    is_title?: boolean;
     icon?: string;
     url?: string;
     badge?: {
         variant: string;
         text?: string;
     };
-    badgeIcon?: string;
-    parentKey?: string;
+    badge_icon?: string;
+    parent_key?: string;
     target?: HTMLAttributeAnchorTarget;
-    isDisabled?: boolean;
+    is_disabled?: boolean;
     children?: MenuItemType[];
 };
 
